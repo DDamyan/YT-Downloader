@@ -1,0 +1,11 @@
+{
+  "name": "yt-downloader",
+  "version": "1.0.0",
+  "description": "Download Youtube videos as mp3 or mp4 [more coming...]",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Damyan Damyanov",
+  "license": "ISC"
+}
