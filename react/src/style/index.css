@@ -3,5 +3,9 @@ body {
   margin: 0;
   height: 100%;
 
+  font-size: 17px;
+
+  font-family: Verdana, sans-serif;
+
   background-color: rgb(161, 223, 238);
 }
