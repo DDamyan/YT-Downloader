@@ -11,11 +11,15 @@ function App() {
   const addVideo = function (vid) {
     setVideos([...videos, vid]);
   };
+  const delVideo = function (ind) {
+    setVideos(videos.filter((_, index) => index !== ind));
+  };
+
   console.log(videos);
   return (
     <div>
       <Form addVideo={addVideo} />
-      <VideoList videos={videos} />
+      <VideoList videos={videos} delVideo={delVideo} />
     </div>
   );
 }
