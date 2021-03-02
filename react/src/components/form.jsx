@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {validURL} from '../functions/validURL.js';
 
-const serverFetch = async function (URL, callback) {
-  const promise = await fetch(`http://localhost:5000/info?url=${URL}`, {
+const serverFetch = async function (url, callback) {
+  const promise = await fetch(`http://localhost:5000/info?url=${url}`, {
     method: 'GET',
   });
   const result = await promise.json();
   callback(result);
+
+  console.log(result);
 };
 
 export const Form = function (props) {

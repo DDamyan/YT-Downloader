@@ -24,8 +24,8 @@ const Video = function (props) {
 
   const handleDelete = () => props.delVideo(props.index);
 
-  const handleDownload = () => {
-    console.log('download!');
+  const handleDownload = (url, name) => {
+    window.open(`http://localhost:5000/download?url=${url}&name=${name}`);
   };
 
   return (
@@ -42,7 +42,7 @@ const Video = function (props) {
       <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
         <img className='externalLink' src={externalLinkSvg} alt='Link' />
       </a>
-      <div onClick={handleDownload} className='download'>
+      <div onClick={() => handleDownload(props.href, props.title)} className='download'>
         <img src={downloadSvg} alt='↓' />
         <div>Download</div>
       </div>

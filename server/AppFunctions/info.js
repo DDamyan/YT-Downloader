@@ -1,3 +1,4 @@
+const {filterFormats} = require('ytdl-core');
 const ytdl = require('ytdl-core');
 const {validateLink} = require('./functions');
 
@@ -11,10 +12,15 @@ exports.info = function (req, res) {
       ytdl.getInfo(URL).then(info => {
         const response = {
           'title': info.videoDetails.title,
-          'rating': info.player_response.videoDetails.averageRating,
+          //'rating': info.player_response.videoDetails.averageRating,
           'uploaded by': info.videoDetails.author.name,
           'thumbnail': info.videoDetails.thumbnails[3],
+          'formats': info.formats,
         };
+
+        //var forms = ytdl.filterFormats(info.formats, 'audioonly');
+        // var forms = ytdl.chooseFormat(info.formats, {quality: 'highestaudio'});
+        // console.log(forms);
 
         res.json({url: URL, ...response});
       });
