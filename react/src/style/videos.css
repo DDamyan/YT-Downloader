@@ -63,7 +63,7 @@ div.extend-button {
   justify-content: center;
   align-items: flex-end;
 
-  background-color: rgba(0, 0, 0, 0.13);
+  /* background-color: rgba(0, 0, 0, 0.13); */
 
   font-size: 40px;
   line-height: 10px;
@@ -103,4 +103,27 @@ div.extend-dropdown {
 div.extend-dropdown > div:hover {
   /* display: none; */
   background-color: rgba(165, 42, 42, 0.562);
+}
+
+/***  DOWNLOAD-BUTTON  ***/
+div.download {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  border-radius: 5px;
+  padding: 4px;
+
+  cursor: pointer;
+}
+div.download:hover {
+  background-color: rgba(0, 0, 0, 0.349);
+}
+
+div.download > img {
+  width: 30px;
+}
+
+div.download > * {
+  float: left;
 }

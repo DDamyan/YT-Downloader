@@ -15,7 +15,6 @@ function App() {
     setVideos(videos.filter((_, index) => index !== ind));
   };
 
-  console.log(videos);
   return (
     <div>
       <Form addVideo={addVideo} />

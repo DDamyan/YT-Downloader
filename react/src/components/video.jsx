@@ -1,45 +1,51 @@
-import {useEffect, useRef, useState} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
+import downloadSvg from '../svg/download.svg';
 
 const Video = function (props) {
   const [hideDropdown, setHideDropdown] = useState(true);
   const showDropdown = () => {
     setHideDropdown(!hideDropdown);
-
-    if (hideDropdown) {
-      props.addRef({[props.index]: extendDropdownRef.current});
-      //console.log('add');
-    } else {
-      //remove?
-      //console.log('remove');
-    }
   };
 
-  const extendDropdownRef = useRef();
+  useEffect(() => {
+    const handle_OutsideClick = e => {
+      if (!hideDropdown)
+        if (e.target.closest('.extend-button') !== extendButtonRef.current) setHideDropdown(true);
+    };
 
-  //   useEffect(() => {
-  //     props.addRef(extendDropdownRef.current);
-  //     return () => {
-  //       // remove from Parent-state
-  //     };
-  //   }, []);
+    document.addEventListener('mousedown', handle_OutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handle_OutsideClick);
+    };
+  }, [hideDropdown]);
+
+  const extendButtonRef = useRef();
 
   const handleDelete = () => props.delVideo(props.index);
+
+  const handleDownload = () => {
+    console.log('download!');
+  };
 
   return (
     <li key={props.index}>
       <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
       {props.title}
-      <div className='noselect extend-button' onClick={showDropdown}>
+      <div ref={extendButtonRef} className='noselect extend-button' onClick={showDropdown}>
         <div className='extend-dots'>&#183;&#183;&#183;</div>
       </div>
-      <div ref={extendDropdownRef} hidden={hideDropdown} className='extend-dropdown'>
+      <div hidden={hideDropdown} className='extend-dropdown'>
         <div onClick={() => handleDelete()}>remove</div>
         <div>rename</div>
       </div>
       <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
         <img className='externalLink' src={externalLinkSvg} alt='Link' />
       </a>
+      <div onClick={handleDownload} className='download'>
+        <img src={downloadSvg} alt='↓' />
+        <div>Download</div>
+      </div>
     </li>
   );
 };
