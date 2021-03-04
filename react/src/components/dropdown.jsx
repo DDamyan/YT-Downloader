@@ -1,28 +1,30 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import onClickOutside from 'react-onclickoutside';
 import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
-function Dropdown({title = '', items = []}) {
+function Dropdown({title = '', items = [], itagProp}) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
-  const dropdownRef = useRef();
   const toggle = () => setOpen(!open);
   Dropdown.handleClickOutside = () => setOpen(false);
 
   function handleOnClick(item) {
-    if (!selected.some(curr => curr.id === item.id)) {
+    if (!selected.some(curr => curr.itag === item.itag)) {
       setSelected([item]);
+
+      itagProp(item);
     } else {
       //   let filterSelected = selected;
       //   filterSelected.filter(curr => curr.id !== item.id);
       //   setSelected([...filterSelected]);
       setSelected([]);
+      itagProp(0);
     }
   }
 
   function isItemSelected(item) {
-    if (selected.find(curr => curr.id === item.id)) {
+    if (selected.find(curr => curr.itag === item.itag)) {
       return true;
     }
     return false;
@@ -36,7 +38,7 @@ function Dropdown({title = '', items = []}) {
   var usedCategory = [];
 
   return (
-    <div className='dropdown-wrapper noselect' ref={dropdownRef}>
+    <div className='dropdown-wrapper noselect'>
       <div className={`dropdown-button ${open ? 'open' : ''}`} onClick={() => toggle()}>
         {title}
       </div>
@@ -54,7 +56,7 @@ function Dropdown({title = '', items = []}) {
                 <>
                   {categoryHTML}
                   <li
-                    key={item.id}
+                    key={item.itag}
                     onClick={() => handleOnClick(item)}
                     className={`dropdown-content ${isSelected}`}
                   >

@@ -5,6 +5,8 @@ import downloadSvg from '../svg/download.svg';
 
 const Video = function (props) {
   const [hideDropdown, setHideDropdown] = useState(true);
+  const [Itag, setItag] = useState(0);
+
   const showDropdown = () => {
     setHideDropdown(!hideDropdown);
   };
@@ -25,8 +27,11 @@ const Video = function (props) {
 
   const handleDelete = () => props.delVideo(props.index);
 
-  const handleDownload = (url, name) => {
-    window.open(`http://localhost:5000/download?url=${url}&name=${name}`);
+  const handleDownload = (url, name, itag) => {
+    if (itag > 0) {
+      //window.open(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
+      console.log(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
+    } else alert('plz select a format');
   };
 
   var DDformats = [];
@@ -34,8 +39,8 @@ const Video = function (props) {
     if (format.hasVideo === false && format.hasAudio === true && format.container === 'mp4')
       format.container = 'mp3';
     DDformats.push({
-      id: format.itag,
-      value: `${format.qualityLabel ?? format.audioBitrate + ' bit'} - ${format.hasAudio}`,
+      itag: format.itag,
+      value: `${format.qualityLabel ?? format.audioBitrate + ' kbps'} - ${format.hasAudio}`,
       category: format.container,
       noSound: !format.hasAudio,
     });
@@ -55,9 +60,8 @@ const Video = function (props) {
       <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
         <img className='externalLink' src={externalLinkSvg} alt='Link' />
       </a>
-
-      <Dropdown title='Format' items={DDformats} />
-      <div onClick={() => handleDownload(props.href, props.title)} className='download'>
+      <Dropdown title='Format' items={DDformats} itagProp={setItag} />
+      <div onClick={() => handleDownload(props.href, props.title, Itag.itag)} className='download'>
         <img src={downloadSvg} alt='↓' />
         <div>Download</div>
       </div>

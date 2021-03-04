@@ -33,10 +33,11 @@ exports.download = function (req, res) {
           ytdl
             .getInfo(ref)
             .then(info => {
-              const dt = new Date().getTime();
-              const name = dt + userVideoName + '.mp4';
-
               const Wformat = ytdl.chooseFormat(info.formats, {quality: itag});
+
+              const dt = new Date().getTime();
+              const name = `${dt}_${userVideoName}.${Wformat.container}`;
+
               //const result = ytdl.downloadFromInfo(info, {filter: format => format === Wformat});
 
               //const ref = 'https://www.youtube.com/watch?v=XXYlFuWEuKI';
@@ -69,11 +70,17 @@ exports.download = function (req, res) {
                   '-c:v',
                   'copy',
                   // compressing
-                  '-vcodec',
-                  'libx265',
-                  '-crf',
-                  '50',
+                  //'-vcodec',
+                  //'libx265',
+                  //'-crf',
+                  //'50',
+                  // Define metadata
+                  '-metadata',
+                  'title=What is that',
+                  '-metadata',
+                  'artist=ur mum',
                   // Define output file
+
                   name,
                 ],
                 {
