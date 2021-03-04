@@ -1,5 +1,6 @@
 import React, {useState, useRef} from 'react';
 import onClickOutside from 'react-onclickoutside';
+import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
 function Dropdown({title = '', items = []}) {
@@ -27,24 +28,40 @@ function Dropdown({title = '', items = []}) {
     return false;
   }
 
+  const sortedItems = items.sort((a, b) => {
+    if (a.category < b.category) return -1;
+    if (a.category > b.category) return 1;
+    return 0;
+  });
+  var usedCategory = [];
+
   return (
-    <div className='dropdown-wrapper' ref={dropdownRef}>
-      <div className='dropdown-button' onClick={() => toggle()}>
+    <div className='dropdown-wrapper noselect' ref={dropdownRef}>
+      <div className={`dropdown-button ${open ? 'open' : ''}`} onClick={() => toggle()}>
         {title}
       </div>
       <div className='dropdown'>
         {open && (
           <ul className='dropdown-contentlist'>
-            {items.map(item => {
-              var isSelected = isItemSelected(item) ? 'selected' : '';
+            {sortedItems.map(item => {
+              const isSelected = isItemSelected(item) ? 'selected' : '';
+              var categoryHTML = null;
+              if (usedCategory.indexOf(item.category) === -1) {
+                categoryHTML = <li className='dropdown-category'>{item.category}</li>;
+                usedCategory.push(item.category);
+              }
               return (
-                <li
-                  key={item.id}
-                  onClick={() => handleOnClick(item)}
-                  className={`dropdown-content ${isSelected}`}
-                >
-                  {item.value}
-                </li>
+                <>
+                  {categoryHTML}
+                  <li
+                    key={item.id}
+                    onClick={() => handleOnClick(item)}
+                    className={`dropdown-content ${isSelected}`}
+                  >
+                    {item.value}
+                    {item.noSound && <img className='no-sound' src={NoSoundSVG} alt='no sound' />}
+                  </li>
+                </>
               );
             })}
           </ul>
@@ -54,6 +71,4 @@ function Dropdown({title = '', items = []}) {
   );
 }
 
-export default onClickOutside(Dropdown, {
-  handleClickOutside: () => Dropdown.handleClickOutside,
-});
+export default onClickOutside(Dropdown, {handleClickOutside: () => Dropdown.handleClickOutside});

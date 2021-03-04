@@ -10,6 +10,7 @@ export const VideoList = function (props) {
             title={val.title}
             index={i}
             thumbnail={val.thumbnail.url}
+            formats={val.formats}
             href={val.url}
             delVideo={props.delVideo}
           />

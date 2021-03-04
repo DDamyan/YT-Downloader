@@ -1,4 +1,5 @@
 import {useRef, useState, useEffect} from 'react';
+import Dropdown from './dropdown';
 import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
 import downloadSvg from '../svg/download.svg';
 
@@ -28,6 +29,18 @@ const Video = function (props) {
     window.open(`http://localhost:5000/download?url=${url}&name=${name}`);
   };
 
+  var DDformats = [];
+  props.formats.map(format => {
+    if (format.hasVideo === false && format.hasAudio === true && format.container === 'mp4')
+      format.container = 'mp3';
+    DDformats.push({
+      id: format.itag,
+      value: `${format.qualityLabel ?? format.audioBitrate + ' bit'} - ${format.hasAudio}`,
+      category: format.container,
+      noSound: !format.hasAudio,
+    });
+  });
+
   return (
     <li key={props.index}>
       <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
@@ -42,6 +55,8 @@ const Video = function (props) {
       <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
         <img className='externalLink' src={externalLinkSvg} alt='Link' />
       </a>
+
+      <Dropdown title='Format' items={DDformats} />
       <div onClick={() => handleDownload(props.href, props.title)} className='download'>
         <img src={downloadSvg} alt='↓' />
         <div>Download</div>

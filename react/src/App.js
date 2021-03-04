@@ -5,23 +5,6 @@ import './style/index.css';
 import './style/videos.css';
 import './style/form.css';
 
-import Dropdown from './components/dropdown';
-
-const testItems = [
-  {
-    id: 111,
-    value: 'first Value of all',
-  },
-  {
-    id: 222,
-    value: 'second!!!',
-  },
-  {
-    id: 333,
-    value: 'Hello, there :D',
-  },
-];
-
 function App() {
   const [videos, setVideos] = useState([]);
 
@@ -35,9 +18,6 @@ function App() {
   return (
     <div>
       <Form addVideo={addVideo} />
-      <React.StrictMode>
-        <Dropdown title='Dropie' items={testItems} />
-      </React.StrictMode>
       <VideoList videos={videos} delVideo={delVideo} />
     </div>
   );
