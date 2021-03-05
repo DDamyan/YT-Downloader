@@ -36,80 +36,89 @@ exports.download = function (req, res) {
               const Wformat = ytdl.chooseFormat(info.formats, {quality: itag});
 
               const dt = new Date().getTime();
-              const name = `${dt}_${userVideoName}.${Wformat.container}`;
+              const fileName = `${dt}_${userVideoName}.${Wformat.container}`;
+
+              res.header('Content-Disposition', `attachment; filename="${fileName}.mp3"`);
 
               //const result = ytdl.downloadFromInfo(info, {filter: format => format === Wformat});
 
-              //const ref = 'https://www.youtube.com/watch?v=XXYlFuWEuKI';
-              const audio = ytdl.downloadFromInfo(info, {quality: 'highestaudio'});
-              const video = ytdl.downloadFromInfo(info, {filter: format => format === Wformat});
-              console.log('requesting...');
-              const testPRO = cp.spawn(
-                ffmpeg,
-                [
-                  //hide logs on console
-                  '-loglevel',
-                  '8',
-                  '-hide_banner',
-                  // // // //
-                  '-y', // replace existing file
-                  // set using threads
-                  '-threads',
-                  '6',
-                  // Set inputs
-                  '-i',
-                  'pipe:4',
-                  '-i',
-                  'pipe:5',
-                  // Map audio & video from streams
-                  '-map',
-                  '0:a',
-                  '-map',
-                  '1:v',
-                  // Keep encoding
-                  '-c:v',
-                  'copy',
-                  // compressing
-                  //'-vcodec',
-                  //'libx265',
-                  //'-crf',
-                  //'50',
-                  // Define metadata
-                  '-metadata',
-                  'title=What is that',
-                  '-metadata',
-                  'artist=ur mum',
-                  // Define output file
-
-                  name,
-                ],
-                {
-                  windowsHide: true, //true
-                  stdio: [
-                    /* Standard: stdin, stdout, stderr */
-                    'inherit',
-                    'inherit',
-                    'inherit',
-                    /* Custom: pipe:3, pipe:4, pipe:5 */
-                    'pipe',
-                    'pipe',
-                    'pipe',
-                  ],
-                },
-              );
-              testPRO.on('close', () => {
-                console.log('done!');
-
-                res.download(name, err => {
-                  if (err) throw err;
-
-                  fs.unlinkSync(name);
-                });
+              const toDownload = ytdl.downloadFromInfo(info, {
+                filter: format => format === Wformat,
               });
 
-              //res.download('./TEST_output (1).mp4', err => console.log('Download failed: ', err));
-              audio.pipe(testPRO.stdio[4]);
-              video.pipe(testPRO.stdio[5]);
+              if (Wformat.hasAudio) {
+                toDownload.pipe(res);
+              } else {
+                //const ref = 'https://www.youtube.com/watch?v=XXYlFuWEuKI';
+                const audio = ytdl.downloadFromInfo(info, {quality: 'highestaudio'});
+                console.log('requesting...');
+                const testPRO = cp.spawn(
+                  ffmpeg,
+                  [
+                    //hide logs on console
+                    '-loglevel',
+                    '8',
+                    '-hide_banner',
+                    // // // //
+                    '-y', // replace existing file
+                    // set using threads
+                    '-threads',
+                    '6',
+                    // Set inputs
+                    '-i',
+                    'pipe:4',
+                    '-i',
+                    'pipe:5',
+                    // Map audio & video from streams
+                    '-map',
+                    '0:a',
+                    '-map',
+                    '1:v',
+                    // Keep encoding
+                    '-c:v',
+                    'copy',
+                    // compressing
+                    //'-vcodec',
+                    //'libx265',
+                    //'-crf',
+                    //'50',
+                    // Define metadata
+                    '-metadata',
+                    'title=What is that',
+                    '-metadata',
+                    'artist=ur mum',
+                    // Define output file
+
+                    fileName,
+                  ],
+                  {
+                    windowsHide: true, //true
+                    stdio: [
+                      /* Standard: stdin, stdout, stderr */
+                      'inherit',
+                      'inherit',
+                      'inherit',
+                      /* Custom: pipe:3, pipe:4, pipe:5 */
+                      'pipe',
+                      'pipe',
+                      'pipe',
+                    ],
+                  },
+                );
+                testPRO.on('close', () => {
+                  console.log('done!');
+
+                  res.download(fileName, err => {
+                    if (err) throw err;
+
+                    fs.unlinkSync(fileName);
+                  });
+                });
+
+                //res.download('./TEST_output (1).mp4', err => console.log('Download failed: ', err));
+                audio.pipe(testPRO.stdio[4]);
+                toDownload.pipe(testPRO.stdio[5]);
+              }
             })
             .catch(error => res.json({error: error.toString()}));
         } catch (error) {

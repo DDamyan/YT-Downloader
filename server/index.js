@@ -21,6 +21,10 @@ app.get('/download', download);
 
 app.get('/info', info);
 
+app.get('/%C3%BC%C3%A4%C3%B6', (req, res) => {
+  res.json({ready: 'ready'});
+});
+
 app.get('/lol', (req, res) => {
   const ref = 'https://www.youtube.com/watch?v=RUQl6YcMalg';
   ytdl

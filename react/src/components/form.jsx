@@ -8,7 +8,7 @@ const serverFetch = async function (url, callback) {
   const result = await promise.json();
   callback(result);
 
-  result.formats.map(format => console.log(format.qualityLabel + ' -- ' + format.itag));
+  //result.formats.map(format => console.log(format.qualityLabel + ' -- ' + format.itag));
 };
 
 export const Form = function (props) {

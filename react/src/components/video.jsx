@@ -30,8 +30,24 @@ const Video = function (props) {
   const handleDownload = (url, name, itag) => {
     if (itag > 0) {
       //window.open(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
-      console.log(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
+      //console.log(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
+      testFetch();
     } else alert('plz select a format');
+  };
+
+  const testFetch = async () => {
+    const responce = await fetch(
+      'http://localhost:5000/download?url=https://www.youtube.com/watch?v=RUQl6YcMalg&name=Billie Eilish - Therefore I Am (Official Music Video)&itag=140',
+    );
+    const blob = await responce.blob();
+
+    // const reader = responce.body.pipeThrough(new TextDecoderStream()).getReader();
+
+    // while (true) {
+    //   const {value, done} = await reader.read();
+    //   if (done) break;
+    //   console.log('Received', value);
+    // }
   };
 
   var DDformats = [];
@@ -40,10 +56,11 @@ const Video = function (props) {
       format.container = 'mp3';
     DDformats.push({
       itag: format.itag,
-      value: `${format.qualityLabel ?? format.audioBitrate + ' kbps'} - ${format.hasAudio}`,
+      value: `${format.qualityLabel ?? format.audioBitrate + ' kbps'}`, // - ${format.hasAudio}
       category: format.container,
       noSound: !format.hasAudio,
     });
+    return null;
   });
 
   return (

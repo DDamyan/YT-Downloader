@@ -7,6 +7,7 @@ export const VideoList = function (props) {
       <ul>
         {props.videos.map((val, i) => (
           <Video
+            key={val.url}
             title={val.title}
             index={i}
             thumbnail={val.thumbnail.url}

@@ -29,13 +29,13 @@ div.dropdown {
   padding: 0;
 }
 
-.dropdown-contentlist > li {
+.dropdown-contentlist li {
   padding: 5px;
   display: flex;
   align-items: center;
 }
 
-.dropdown-contentlist > li.dropdown-category {
+.dropdown-contentlist li.dropdown-category {
   justify-content: flex-start;
   padding: 0px 10%;
   background-color: black;

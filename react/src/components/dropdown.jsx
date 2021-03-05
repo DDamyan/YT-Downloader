@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import onClickOutside from 'react-onclickoutside';
-import NoSoundSVG from '../svg/no-sound.svg';
+//import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
 function Dropdown({title = '', items = [], itagProp}) {
@@ -12,8 +12,8 @@ function Dropdown({title = '', items = [], itagProp}) {
   function handleOnClick(item) {
     if (!selected.some(curr => curr.itag === item.itag)) {
       setSelected([item]);
-
       itagProp(item);
+      setOpen(false);
     } else {
       //   let filterSelected = selected;
       //   filterSelected.filter(curr => curr.id !== item.id);
@@ -35,12 +35,19 @@ function Dropdown({title = '', items = [], itagProp}) {
     if (a.category > b.category) return 1;
     return 0;
   });
+
   var usedCategory = [];
+  const newCategory = item => {
+    usedCategory.push(item.category);
+    return <li className='dropdown-category'>{item.category}</li>;
+  };
 
   return (
     <div className='dropdown-wrapper noselect'>
       <div className={`dropdown-button ${open ? 'open' : ''}`} onClick={() => toggle()}>
-        {title}
+        {selected.length === 1
+          ? `${selected[0].value} (${selected[0].category})`
+          : 'Chose a format:'}
       </div>
       <div className='dropdown'>
         {open && (
@@ -49,11 +56,10 @@ function Dropdown({title = '', items = [], itagProp}) {
               const isSelected = isItemSelected(item) ? 'selected' : '';
               var categoryHTML = null;
               if (usedCategory.indexOf(item.category) === -1) {
-                categoryHTML = <li className='dropdown-category'>{item.category}</li>;
-                usedCategory.push(item.category);
+                categoryHTML = newCategory(item);
               }
               return (
-                <>
+                <span key={item.itag + item.category}>
                   {categoryHTML}
                   <li
                     key={item.itag}
@@ -61,9 +67,9 @@ function Dropdown({title = '', items = [], itagProp}) {
                     className={`dropdown-content ${isSelected}`}
                   >
                     {item.value}
-                    {item.noSound && <img className='no-sound' src={NoSoundSVG} alt='no sound' />}
+                    {/* {item.noSound && <img className='no-sound' src={NoSoundSVG} alt='no sound' />} */}
                   </li>
-                </>
+                </span>
               );
             })}
           </ul>
