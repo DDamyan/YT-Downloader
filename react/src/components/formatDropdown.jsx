@@ -3,7 +3,7 @@ import onClickOutside from 'react-onclickoutside';
 //import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
-function Dropdown({title = '', items = [], itagProp}) {
+function Dropdown({title = '', items = [], setSelectedProp}) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const toggle = () => setOpen(!open);
@@ -12,14 +12,17 @@ function Dropdown({title = '', items = [], itagProp}) {
   function handleOnClick(item) {
     if (!selected.some(curr => curr.itag === item.itag)) {
       setSelected([item]);
-      itagProp(item);
+      //itagProp(item);
+      setSelectedProp(item);
+      //console.log(item);
       setOpen(false);
     } else {
       //   let filterSelected = selected;
       //   filterSelected.filter(curr => curr.id !== item.id);
       //   setSelected([...filterSelected]);
+      setSelectedProp(null);
       setSelected([]);
-      itagProp(0);
+      //itagProp(0);
     }
   }
 

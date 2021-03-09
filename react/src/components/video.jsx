@@ -1,86 +1,103 @@
-import {useRef, useState, useEffect} from 'react';
-import Dropdown from './dropdown';
-import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
-import downloadSvg from '../svg/download.svg';
+import {useState, useEffect} from 'react';
+import Dropdown from './formatDropdown';
+// import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
+// import downloadSvg from '../svg/download.svg';
+// import trashSvg from '../svg/rubbish-bin.svg';
+
+var DDformats = [];
 
 const Video = function (props) {
-  const [hideDropdown, setHideDropdown] = useState(true);
-  const [Itag, setItag] = useState(0);
-
-  const showDropdown = () => {
-    setHideDropdown(!hideDropdown);
-  };
-
-  useEffect(() => {
-    const handle_OutsideClick = e => {
-      if (!hideDropdown)
-        if (e.target.closest('.extend-button') !== extendButtonRef.current) setHideDropdown(true);
-    };
-
-    document.addEventListener('mousedown', handle_OutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handle_OutsideClick);
-    };
-  }, [hideDropdown]);
-
-  const extendButtonRef = useRef();
+  const [selectedFormat, setSelectedFormat] = useState(null);
 
   const handleDelete = () => props.delVideo(props.index);
 
-  const handleDownload = (url, name, itag) => {
+  const handleDownload = async (url, name, itag, artist, fomEnd) => {
     if (itag > 0) {
       //window.open(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
-      //console.log(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
-      testFetch();
+      // console.log(
+      //   `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
+      //   fomEnd,
+      // );
+
+      const responce = await fetch(
+        `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
+      );
+      const blob = await responce.blob();
+
+      const hrefUrl = window.URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = hrefUrl;
+      a.download = `${name}.${fomEnd}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     } else alert('plz select a format');
   };
 
-  const testFetch = async () => {
-    const responce = await fetch(
-      'http://localhost:5000/download?url=https://www.youtube.com/watch?v=RUQl6YcMalg&name=Billie Eilish - Therefore I Am (Official Music Video)&itag=140',
-    );
-    const blob = await responce.blob();
-
-    // const reader = responce.body.pipeThrough(new TextDecoderStream()).getReader();
-
-    // while (true) {
-    //   const {value, done} = await reader.read();
-    //   if (done) break;
-    //   console.log('Received', value);
-    // }
-  };
-
-  var DDformats = [];
-  props.formats.map(format => {
-    if (format.hasVideo === false && format.hasAudio === true && format.container === 'mp4')
-      format.container = 'mp3';
-    DDformats.push({
-      itag: format.itag,
-      value: `${format.qualityLabel ?? format.audioBitrate + ' kbps'}`, // - ${format.hasAudio}
-      category: format.container,
-      noSound: !format.hasAudio,
+  useEffect(() => {
+    DDformats.splice(0, DDformats.length);
+    props.formats.map(format => {
+      if (format.hasAudio === false || format.hasVideo === false) {
+        if (format.itag > 399 || format.itag < 394) {
+          // doppelte av1-formate enfernen
+          var container = format.container;
+          if (format.hasVideo === false && format.hasAudio === true && format.container === 'mp4')
+            container = 'mp3';
+          DDformats.push({
+            itag: format.itag,
+            value: `${format.qualityLabel ?? format.audioBitrate + ' kbps'}`, // - ${format.hasAudio} //- ${format.itag}
+            category: container,
+            noSound: !format.hasAudio,
+          });
+        } //else {
+        // console.log(format);
+        //}
+      }
+      return null;
     });
-    return null;
-  });
+
+    //console.log('after -->', DDformats);
+  }, [props.formats]);
 
   return (
     <li key={props.index}>
-      <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
-      {props.title}
-      <div ref={extendButtonRef} className='noselect extend-button' onClick={showDropdown}>
-        <div className='extend-dots'>&#183;&#183;&#183;</div>
+      <div className='left-section'>
+        <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
+        <div className='left-second-section'>
+          <div className='title'>
+            {props.title}
+            <div onClick={() => props.openModal()} className='icon-pencil'></div>
+          </div>
+          <div className='options'>
+            <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
+              {/* <img src={externalLinkSvg} alt='Link' /> */}
+              <div className='icon-external-link'></div>
+            </a>
+            <div onClick={() => handleDelete()} className='delete-bttn-wrapper'>
+              {/* <img src={trashSvg} alt='Delete' /> */}
+              <div className='icon-bin'></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div hidden={hideDropdown} className='extend-dropdown'>
-        <div onClick={() => handleDelete()}>remove</div>
-        <div>rename</div>
-      </div>
-      <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
-        <img className='externalLink' src={externalLinkSvg} alt='Link' />
-      </a>
-      <Dropdown title='Format' items={DDformats} itagProp={setItag} />
-      <div onClick={() => handleDownload(props.href, props.title, Itag.itag)} className='download'>
-        <img src={downloadSvg} alt='↓' />
-        <div>Download</div>
+      <div className='whole-download'>
+        <Dropdown title='Format' items={DDformats} setSelectedProp={setSelectedFormat} />
+        <div
+          onClick={() =>
+            handleDownload(
+              props.href,
+              props.title,
+              selectedFormat?.itag,
+              'artistNAME',
+              selectedFormat?.category,
+            )
+          }
+          className='download'
+        >
+          <div className='icon-download'></div>
+          {/* <img src={downloadSvg} alt='↓' /> */}
+          {/* <div>Download</div> */}
+        </div>
       </div>
     </li>
   );

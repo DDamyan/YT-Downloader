@@ -1,0 +1,83 @@
+/*INNEN*/
+.modal {
+  position: absolute;
+  /* top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px; */
+  padding: 50px;
+  width: 25%;
+  background-color: white;
+  border-radius: 20px;
+}
+.modal:focus {
+  outline: none;
+}
+
+.modal .button-wrapper {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+.modal button.save {
+  background-color: rgb(50, 105, 255);
+}
+.modal button.save:focus {
+  outline: none;
+  box-shadow: rgba(30, 83, 255, 0.5) 0px 0px 1px 4px;
+}
+.modal button.save:hover {
+  background-color: rgb(30, 83, 255);
+}
+
+.modal button {
+  color: white;
+  background-color: gray;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  margin-left: 10px;
+}
+.modal button:focus {
+  outline: none;
+  box-shadow: rgba(167, 167, 167, 0.5) 0px 0px 1px 4px;
+}
+.modal button:hover {
+  background-color: rgb(92, 92, 92);
+}
+
+.modal input {
+  width: 70%;
+  border: none;
+  font-size: inherit;
+  border-bottom: black solid 1px;
+}
+.modal input:focus {
+  outline: none;
+}
+
+.modal .artist-wrapper,
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 70%;
+  /* margin-top: 10px; */
+  padding: 10px;
+
+  /* background-color: rgba(255, 0, 0, 0.212); */
+}
+
+/*AUßEN*/
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(32, 32, 32, 0.8);
+}
