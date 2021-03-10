@@ -9,6 +9,8 @@
   width: 25%;
   background-color: white;
   border-radius: 20px;
+
+  animation: fadein 200ms;
 }
 .modal:focus {
   outline: none;
@@ -80,4 +82,15 @@
   right: 0;
   bottom: 0;
   background-color: rgba(32, 32, 32, 0.8);
+
+  animation: fadein 400ms;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

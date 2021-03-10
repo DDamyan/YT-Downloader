@@ -13,23 +13,37 @@ div.dropdown-button {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  backface-visibility: hidden;
+  transform: translateZ(0) scale(1, 1);
+
+  font-size: 18px;
+  font-weight: 600;
+  transition: box-shadow 300ms;
+  box-shadow: inset rgb(0 0 0 / 60%) 0px 0px 6px -1px;
 }
 
 div.dropdown-button::after {
-  content: '▼';
+  content: '›';
   position: absolute;
   right: 0.5rem;
-  font-size: 15px;
+  line-height: 20px;
+  font-size: 30px;
+  transform-origin: 50% 65%;
+  transition: transform 200ms ease-in-out;
+  /* background-color: rgba(238, 130, 238, 0.37); */
+  transform: rotate(180deg);
 }
 
 div.dropdown-button.open {
-  border-radius: 5px 5px 0px 0px;
+  box-shadow: inset rgb(0 0 0 / 60%) 0px 0px 6px -1px, inset rgb(71, 190, 219) -200px 0px 0px 0px;
 }
 
 div.dropdown-button.open::after {
-  content: '▲';
+  /* content: '▲';
   position: absolute;
-  right: 0.5rem;
+  right: 0.5rem; */
+  transform: rotate(90deg);
 }
 
 div.dropdown {
@@ -38,7 +52,9 @@ div.dropdown {
 
   position: absolute;
   width: 100%;
-  top: 100%;
+  font-size: 17px;
+
+  /* top: 100%; */
 }
 
 .dropdown-contentlist {
@@ -47,10 +63,13 @@ div.dropdown {
   margin: 0;
   padding: 0;
   z-index: 2;
+  display: none;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .dropdown-contentlist li {
-  padding: 5px;
+  padding: 2px;
   display: flex;
   align-items: center;
 }
@@ -76,3 +95,31 @@ div.dropdown {
 /* .no-sound {
   width: 20px;
 } */
+
+/* react-transition-group-animations */
+.cssDropdownAnimation-enter {
+  display: block;
+  opacity: 0;
+  transform: scale(0.95);
+}
+.cssDropdownAnimation-enter-active {
+  opacity: 1;
+  transition: opacity 300ms, transform 200ms;
+  transform: scale(1);
+}
+.cssDropdownAnimation-enter-done {
+  display: block;
+}
+.cssDropdownAnimation-exit {
+  display: block;
+  opacity: 1;
+}
+.cssDropdownAnimation-exit-active {
+  opacity: 0;
+  transition: opacity 300ms, transform 200ms;
+  transform: scale(0.95);
+}
+
+.cssDropdownAnimation-exit-done {
+  display: none;
+}

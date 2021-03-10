@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import Dropdown from './formatDropdown';
+import ReactTooltip from 'react-tooltip';
 // import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
 // import downloadSvg from '../svg/download.svg';
 // import trashSvg from '../svg/rubbish-bin.svg';
@@ -27,7 +28,7 @@ const Video = function (props) {
       const hrefUrl = window.URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = hrefUrl;
-      a.download = `${name}.${fomEnd}`;
+      a.download = `${artist}-${name}.${fomEnd}`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -64,31 +65,65 @@ const Video = function (props) {
       <div className='left-section'>
         <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
         <div className='left-second-section'>
-          <div className='title'>
-            {props.title}
-            <div onClick={() => props.openModal()} className='icon-pencil'></div>
-          </div>
+          <div className='title'>{props.title}</div>
           <div className='options'>
-            <a href={props.href} target='_blank' rel='noreferrer' className='noselect'>
+            <a
+              data-tip='Link'
+              data-for='link-tooltip'
+              href={props.href}
+              target='_blank'
+              rel='noreferrer'
+              className='noselect'
+            >
               {/* <img src={externalLinkSvg} alt='Link' /> */}
               <div className='icon-external-link'></div>
+              <ReactTooltip
+                id='link-tooltip'
+                place='bottom'
+                className='tooltip'
+                effect='solid'
+                textColor='#3e8acc'
+                backgroundColor='#ffffff'
+              />
             </a>
-            <div onClick={() => handleDelete()} className='delete-bttn-wrapper'>
+            <div
+              data-tip='Remove'
+              data-for='delete-tooltip'
+              onClick={() => handleDelete()}
+              className='delete-bttn-wrapper'
+            >
               {/* <img src={trashSvg} alt='Delete' /> */}
               <div className='icon-bin'></div>
+              <ReactTooltip
+                id='delete-tooltip'
+                place='bottom'
+                className='tooltip'
+                effect='solid'
+                backgroundColor='#db524b'
+              />
             </div>
           </div>
         </div>
       </div>
       <div className='whole-download'>
-        <Dropdown title='Format' items={DDformats} setSelectedProp={setSelectedFormat} />
+        <div data-tip='Edit' data-for='edit-tooltip' className='edit'>
+          <div onClick={() => props.openModal()} className='icon-pencil'></div>
+          <ReactTooltip
+            id='edit-tooltip'
+            place='bottom'
+            className='tooltip'
+            effect='solid'
+            backgroundColor='black'
+          />
+        </div>
+        <Dropdown items={DDformats} setSelectedProp={setSelectedFormat} />
         <div
           onClick={() =>
             handleDownload(
               props.href,
-              props.title,
+              props.videoName,
               selectedFormat?.itag,
-              'artistNAME',
+              props.videoArtist,
               selectedFormat?.category,
             )
           }

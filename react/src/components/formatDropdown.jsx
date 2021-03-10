@@ -1,12 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import onClickOutside from 'react-onclickoutside';
+import {CSSTransition} from 'react-transition-group';
 //import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
-function Dropdown({title = '', items = [], setSelectedProp}) {
+function Dropdown({items = [], setSelectedProp}) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
-  const toggle = () => setOpen(!open);
+  const toggle = async () => {
+    new Promise(resolve => resolve(setOpen(!open)));
+    //changeViewport();
+  };
+  const contentlistRef = useRef();
+  const [dropdownStyle, setDropdownStyle] = useState({top: '100%'});
   Dropdown.handleClickOutside = () => setOpen(false);
 
   function handleOnClick(item) {
@@ -25,6 +31,20 @@ function Dropdown({title = '', items = [], setSelectedProp}) {
       //itagProp(0);
     }
   }
+
+  const isOutOfViewPort = ele =>
+    ele.bottom > (window.innerHeight || document.documentElement.clientHeight);
+
+  const changeViewport = () => {
+    if (!open) {
+      const currPosition = contentlistRef.current.getBoundingClientRect();
+      if (isOutOfViewPort(currPosition)) {
+        setDropdownStyle({top: 'unset', bottom: '100%'});
+      }
+    } else {
+      setDropdownStyle({top: '100%', bottom: 'unset'});
+    }
+  };
 
   function isItemSelected(item) {
     if (selected.find(curr => curr.itag === item.itag)) {
@@ -47,13 +67,16 @@ function Dropdown({title = '', items = [], setSelectedProp}) {
 
   return (
     <div className='dropdown-wrapper noselect'>
-      <div className={`dropdown-button ${open ? 'open' : ''}`} onClick={() => toggle()}>
+      <div
+        className={`dropdown-button ${open ? 'open' : ''}`}
+        onClick={() => toggle().then(() => changeViewport())}
+      >
         {selected.length === 1
           ? `${selected[0].value} (${selected[0].category})`
-          : 'Chose a format:'}
+          : 'Choose a format:'}
       </div>
-      <div className='dropdown'>
-        {open && (
+      <div ref={contentlistRef} style={dropdownStyle} className='dropdown'>
+        <CSSTransition in={open} timeout={300} classNames='cssDropdownAnimation'>
           <ul className='dropdown-contentlist'>
             {sortedItems.map(item => {
               const isSelected = isItemSelected(item) ? 'selected' : '';
@@ -76,7 +99,7 @@ function Dropdown({title = '', items = [], setSelectedProp}) {
               );
             })}
           </ul>
-        )}
+        </CSSTransition>
       </div>
     </div>
   );

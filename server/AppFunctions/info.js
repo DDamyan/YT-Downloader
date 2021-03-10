@@ -10,7 +10,7 @@ exports.info = function (req, res) {
 
     if (videoID) {
       ytdl.getInfo(URL).then(info => {
-        var {title, author, thumbnails} = info.videoDetails;
+        var {title, author, thumbnails, videoId} = info.videoDetails;
         var artist = '';
         const splitTitle = title.split('-');
         if (splitTitle.length === 2) {
@@ -20,6 +20,7 @@ exports.info = function (req, res) {
         const response = {
           'artist': artist.trim(),
           'title': title.trim(),
+          'videoId': videoId,
           //'rating': info.player_response.videoDetails.averageRating,
           'uploaded by': author.name,
           'thumbnail': thumbnails[3],
