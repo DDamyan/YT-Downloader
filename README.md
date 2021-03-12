@@ -4,7 +4,23 @@ Youtube-API Key: AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw
 
 serverFetch parm.type = 'info' || 'download'
 
-OLD manifest (removed because of error):
+# TODO
+
+extendet format view (av01.0.08M.08)
+-- name change
+-- artist in metadata
+fromatDropdown kleiner machen => damit es nicht oben und unten über den rand gehen kann
+server und frontend zusammenführen
+-- Dropdown Animationen
+hinzufügen Animationen
+löschen Animationen
+download Animationen
+ladesymbol bei downloaden und hinzufügen
+-- Liste local speichen => bei neuladen noch vorhanden!!!
+errors oder mitteilung in kleinen popup an der seite mitteilen
+
+# OLD manifest (removed because of error):
+
 {
 "short_name": "React App",
 "name": "Create React App Sample",
