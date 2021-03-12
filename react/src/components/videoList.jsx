@@ -28,7 +28,6 @@ export const VideoList = function (props) {
         {props.videos.map((val, i) => (
           <Video
             key={val.videoId + i}
-            title={`${val.artist} - ${val.title}`}
             videoName={val.title}
             videoArtist={val.artist}
             index={i}

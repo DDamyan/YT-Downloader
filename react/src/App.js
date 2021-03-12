@@ -5,9 +5,21 @@ import './style/index.css';
 import './style/videos.css';
 import './style/form.css';
 import './style/modal.css';
+import './style/variable.css';
 
 function App() {
   const [videos, setVideos] = useState([]);
+
+  React.useEffect(() => {
+    const data = localStorage.getItem('video-list');
+    if (data) {
+      setVideos(JSON.parse(data));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem('video-list', JSON.stringify(videos));
+  });
 
   const addVideo = function (vid) {
     setVideos([...videos, vid]);

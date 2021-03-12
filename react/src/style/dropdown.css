@@ -3,6 +3,7 @@ div.dropdown-wrapper {
   cursor: pointer;
   position: relative;
   display: flex;
+  margin-left: 10px;
 }
 
 div.dropdown-button {
@@ -46,9 +47,10 @@ div.dropdown-button.open::after {
   transform: rotate(90deg);
 }
 
-div.dropdown {
+.dropdown {
   display: flex;
   justify-content: center;
+  display: none;
 
   position: absolute;
   width: 100%;
@@ -63,7 +65,6 @@ div.dropdown {
   margin: 0;
   padding: 0;
   z-index: 2;
-  display: none;
   border-radius: 5px;
   overflow: hidden;
 }
@@ -109,6 +110,7 @@ div.dropdown {
 }
 .cssDropdownAnimation-enter-done {
   display: block;
+  z-index: 100 i !important;
 }
 .cssDropdownAnimation-exit {
   display: block;

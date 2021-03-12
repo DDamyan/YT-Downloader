@@ -65,11 +65,14 @@ const Video = function (props) {
       <div className='left-section'>
         <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
         <div className='left-second-section'>
-          <div className='title'>{props.title}</div>
+          <div className='title'>
+            {props.videoArtist ? props.videoArtist + ' - ' : ''}
+            {props.videoName}
+          </div>
           <div className='options'>
             <a
               data-tip='Link'
-              data-for='link-tooltip'
+              data-for={`link-tooltip-${props.index}`}
               href={props.href}
               target='_blank'
               rel='noreferrer'
@@ -78,7 +81,7 @@ const Video = function (props) {
               {/* <img src={externalLinkSvg} alt='Link' /> */}
               <div className='icon-external-link'></div>
               <ReactTooltip
-                id='link-tooltip'
+                id={`link-tooltip-${props.index}`}
                 place='bottom'
                 className='tooltip'
                 effect='solid'
@@ -88,14 +91,14 @@ const Video = function (props) {
             </a>
             <div
               data-tip='Remove'
-              data-for='delete-tooltip'
+              data-for={`delete-tooltip-${props.index}`}
               onClick={() => handleDelete()}
               className='delete-bttn-wrapper'
             >
               {/* <img src={trashSvg} alt='Delete' /> */}
               <div className='icon-bin'></div>
               <ReactTooltip
-                id='delete-tooltip'
+                id={`delete-tooltip-${props.index}`}
                 place='bottom'
                 className='tooltip'
                 effect='solid'
@@ -106,17 +109,27 @@ const Video = function (props) {
         </div>
       </div>
       <div className='whole-download'>
-        <div data-tip='Edit' data-for='edit-tooltip' className='edit'>
-          <div onClick={() => props.openModal()} className='icon-pencil'></div>
+        <div
+          data-tip='Edit'
+          data-for={`edit-tooltip-${props.index}`}
+          className='edit'
+          onClick={() => props.openModal()}
+        >
+          <div className='icon-pencil'></div>
           <ReactTooltip
-            id='edit-tooltip'
-            place='bottom'
+            id={`edit-tooltip-${props.index}`}
+            place='right'
             className='tooltip'
             effect='solid'
             backgroundColor='black'
           />
         </div>
-        <Dropdown items={DDformats} setSelectedProp={setSelectedFormat} />
+        <Dropdown
+          key={props.index}
+          items={DDformats}
+          setSelectedProp={setSelectedFormat}
+          excludeScrollbar={true}
+        />
         <div
           onClick={() =>
             handleDownload(

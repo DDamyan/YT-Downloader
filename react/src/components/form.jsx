@@ -8,7 +8,7 @@ const serverFetch = async function (url, callback) {
   const result = await promise.json();
   callback(result);
 
-  console.log('server:::', result.formats);
+  //console.log('server:::', result.formats);
   //result.formats.map(format => console.log(format.qualityLabel + ' -- ' + format.itag));
 };
 
@@ -21,6 +21,7 @@ export const Form = function (props) {
     if (validURL(link)) {
       serverFetch(link, res => {
         props.addVideo(res);
+        setLink('');
       });
       //   const linkInput = new URL(link);
 
