@@ -6,6 +6,7 @@ const serverFetch = async function (url, callback) {
     method: 'GET',
   });
   const result = await promise.json();
+
   callback(result);
 
   //console.log('server:::', result.formats);
@@ -20,7 +21,10 @@ export const Form = function (props) {
     e.preventDefault();
     if (validURL(link)) {
       serverFetch(link, res => {
-        props.addVideo(res);
+        if (res.hasOwnProperty('error')) {
+          //error
+          alert(res.error);
+        } else props.addVideo(res);
         setLink('');
       });
       //   const linkInput = new URL(link);
@@ -38,7 +42,12 @@ export const Form = function (props) {
   return (
     <div>
       <form id='add-video-form' onSubmit={handle_Submit}>
-        <input type='text' value={link} onChange={handle_Change} />
+        <input
+          type='text'
+          placeholder='Enter Youtube-URL...'
+          value={link}
+          onChange={handle_Change}
+        />
         <button>+ ADD</button>
       </form>
     </div>

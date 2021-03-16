@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import Dropdown from './formatDropdown';
 import ReactTooltip from 'react-tooltip';
 // import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
@@ -9,6 +9,8 @@ var DDformats = [];
 
 const Video = function (props) {
   const [selectedFormat, setSelectedFormat] = useState(null);
+
+  const listRef = useRef();
 
   const handleDelete = () => props.delVideo(props.index);
 
@@ -60,8 +62,15 @@ const Video = function (props) {
     //console.log('after -->', DDformats);
   }, [props.formats]);
 
+  const setIndex = e => {
+    document.querySelectorAll('.top-index').forEach(e => e.classList.remove('top-index'));
+
+    const ele = listRef.current;
+    ele.classList.add('top-index');
+  };
+
   return (
-    <li key={props.index}>
+    <li ref={listRef} onClick={setIndex} key={props.index}>
       <div className='left-section'>
         <img className='thumbnail' src={props.thumbnail} alt='thumbnail' />
         <div className='left-second-section'>

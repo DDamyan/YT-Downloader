@@ -82,7 +82,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(32, 32, 32, 0.8);
-
+  z-index: 10;
   animation: fadein 400ms;
 }
 

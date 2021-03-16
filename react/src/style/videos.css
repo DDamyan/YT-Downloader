@@ -173,3 +173,7 @@ div.download:hover {
 div.download > img {
   width: 30px;
 }
+
+.top-index {
+  z-index: 2;
+}
