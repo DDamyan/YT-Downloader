@@ -30,6 +30,8 @@ ladesymbol bei downloaden und hinzufügen
 
 errors oder mitteilung in kleinen popup an der seite mitteilen
 
+Wenn Videos länger in der localStorage gespeichert werden, geht der Download nicht beim server ?????
+
 # OLD manifest (removed because of error):
 
 {
