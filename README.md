@@ -32,6 +32,8 @@ errors oder mitteilung in kleinen popup an der seite mitteilen
 
 Wenn Videos länger in der localStorage gespeichert werden, geht der Download nicht beim server ?????
 
+# try this: (deleted Video) https://www.youtube.com/watch?v=1Hd4aaWewHY
+
 # OLD manifest (removed because of error):
 
 {

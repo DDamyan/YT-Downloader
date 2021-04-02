@@ -6,7 +6,6 @@ const cp = require('child_process');
 const fs = require('fs');
 const ffmetadata = require('ffmetadata');
 
-
 // ffmetadata.setFfmpegPath(ffmpeg);
 
 /*exports.download = function (req, res) {
@@ -66,13 +65,33 @@ exports.download = function (req, res) {
                   stream.on('close', () => {
                     console.log('ready');
 
-                    fs.readFile(fileName, (err, data) => {
-                      console.log(data);
-                    });
-                    ffmetadata.read(fileName, {}, (err, data) => {
+                    // fs.readFile(fileName, (err, data) => {
+                    //   console.log(data);
+                    // });
+                    const metadata = {
+                      title: userVideoName,
+                      artist: artist,
+                    };
+
+                    ffmetadata.write(fileName, metadata, err => {
                       if (err) throw err;
-                      else console.log(data);
+                      else {
+                        // !!! ==> metadaten wertden geschrieben aber nich beim Download übertragen!!!
+                        console.log('Data written!!');
+                        ffmetadata.read(fileName, {}, (err, data) => {
+                          if (err) throw err;
+                          else console.log(data);
+                        });
+                        res.download(fileName, err => {
+                          if (err) throw err;
+                          //fs.unlinkSync(fileName);
+                        });
+                      }
                     });
+                    // ffmetadata.read(fileName, {}, (err, data) => {
+                    //   if (err) throw err;
+                    //   else console.log(data);
+                    // });
                   });
                   // const ffmpefProgcess = cp.spawn(
                   //   ffmpeg,
