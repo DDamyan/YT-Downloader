@@ -11,6 +11,8 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000;
 
+const ffmetadata = require('ffmetadata');
+
 app.use(cors());
 
 // app.get('/', (req, res) => {
@@ -21,8 +23,15 @@ app.get('/download', download);
 
 app.get('/info', info);
 
-app.get('/%C3%BC%C3%A4%C3%B6', (req, res) => {
-  res.json({ready: 'ready'});
+app.get('/test', (req, res) => {
+  try {
+    ffmetadata.read('Music.mp4', (err, data) => {
+      if (err) throw err;
+      else res.json(JSON.stringify(data));
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get('/lol', (req, res) => {

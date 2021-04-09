@@ -17,7 +17,7 @@
 
 # **YT-Downloader**
 
-**Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`
+# **Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`
 
 # **OLD manifest (removed because of error):**
 
