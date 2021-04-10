@@ -22,7 +22,6 @@ function Dropdown({items = [], setSelectedProp}) {
   // };
   const outsideRef = useOnclickOutside(
     () => {
-      console.log('outside!!!');
       setOpen(false);
     },
     {excludeScrollbar: true, ignoreClass: 'dropdown-category'},

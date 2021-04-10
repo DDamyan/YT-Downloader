@@ -54,206 +54,207 @@ exports.download = function (req, res) {
                   filter: format => format === Wformat,
                 });
 
-                if (Wformat.hasAudio) {
-                  // toDownload.pipe(res);
-                  //TEST: CHANGE METADATA
-                  //const audio = ytdl.downloadFromInfo(info, {quality: 'highestaudio'});
+                if (toDownload) toDownload.pipe(res);
+                // if (Wformat.hasAudio) {
+                // toDownload.pipe(res);
+                //   //TEST: CHANGE METADATA
+                //   //const audio = ytdl.downloadFromInfo(info, {quality: 'highestaudio'});
 
-                  const tempFile = fs.createWriteStream(fileName);
+                //   const tempFile = fs.createWriteStream(fileName);
 
-                  var stream = toDownload.pipe(tempFile);
-                  stream.on('close', () => {
-                    console.log('ready');
+                //   var stream = toDownload.pipe(tempFile);
+                //   stream.on('close', () => {
+                //     console.log('ready');
 
-                    // fs.readFile(fileName, (err, data) => {
-                    //   console.log(data);
-                    // });
-                    const metadata = {
-                      title: userVideoName,
-                      artist: artist,
-                    };
+                //     // fs.readFile(fileName, (err, data) => {
+                //     //   console.log(data);
+                //     // });
+                //     const metadata = {
+                //       title: userVideoName,
+                //       artist: artist,
+                //     };
 
-                    ffmetadata.write(fileName, metadata, err => {
-                      if (err) throw err;
-                      else {
-                        // !!! ==> metadaten wertden geschrieben aber nich beim Download übertragen!!!
-                        console.log('Data written!!');
-                        ffmetadata.read(fileName, {}, (err, data) => {
-                          if (err) throw err;
-                          else console.log(data);
-                        });
-                        res.download(fileName, err => {
-                          if (err) throw err;
-                          //fs.unlinkSync(fileName);
-                        });
-                      }
-                    });
-                    // ffmetadata.read(fileName, {}, (err, data) => {
-                    //   if (err) throw err;
-                    //   else console.log(data);
-                    // });
-                  });
-                  // const ffmpefProgcess = cp.spawn(
-                  //   ffmpeg,
-                  //   [
-                  //     //hide logs on console
-                  //     '-loglevel',
-                  //     '8',
-                  //     '-hide_banner',
-                  //     // // // //
-                  //     '-y', // replace existing file
-                  //     // set using threads
-                  //     // '-threads',
-                  //     // '6',
-                  //     // Set inputs
-                  //     '-i',
-                  //     'pipe:4',
-                  //     // '-i',
-                  //     // 'pipe:5',
-                  //     // Map audio & video from streams
-                  //     // '-map',
-                  //     // '0:a',
-                  //     '-map',
-                  //     '0:0',
-                  //     '-codec',
-                  //     'copy',
-                  //     // '-map',
-                  //     // '1:v',
-                  //     // Keep encoding
-                  //     // '-c:v',
-                  //     // 'copy',
-                  //     // compressing
-                  //     //'-vcodec',
-                  //     //'libx265',
-                  //     //'-crf',
-                  //     //'50',
-                  //     // Define metadata
-                  //     '-metadata',
-                  //     'title=' + userVideoName,
-                  //     '-metadata',
-                  //     'artist=' + artist,
-                  //     //CODEC
-                  //     // '-codec',
-                  //     // 'copy',
-                  //     // Define output file
+                //     ffmetadata.write(fileName, metadata, err => {
+                //       if (err) throw err;
+                //       else {
+                //         // !!! ==> metadaten wertden geschrieben aber nich beim Download übertragen!!!
+                //         console.log('Data written!!');
+                //         ffmetadata.read(fileName, {}, (err, data) => {
+                //           if (err) throw err;
+                //           else console.log(data);
+                //         });
+                //         res.download(fileName, err => {
+                //           if (err) throw err;
+                //           //fs.unlinkSync(fileName);
+                //         });
+                //       }
+                //     });
+                //     // ffmetadata.read(fileName, {}, (err, data) => {
+                //     //   if (err) throw err;
+                //     //   else console.log(data);
+                //     // });
+                //   });
+                //   // const ffmpefProgcess = cp.spawn(
+                //   //   ffmpeg,
+                //   //   [
+                //   //     //hide logs on console
+                //   //     '-loglevel',
+                //   //     '8',
+                //   //     '-hide_banner',
+                //   //     // // // //
+                //   //     '-y', // replace existing file
+                //   //     // set using threads
+                //   //     // '-threads',
+                //   //     // '6',
+                //   //     // Set inputs
+                //   //     '-i',
+                //   //     'pipe:4',
+                //   //     // '-i',
+                //   //     // 'pipe:5',
+                //   //     // Map audio & video from streams
+                //   //     // '-map',
+                //   //     // '0:a',
+                //   //     '-map',
+                //   //     '0:0',
+                //   //     '-codec',
+                //   //     'copy',
+                //   //     // '-map',
+                //   //     // '1:v',
+                //   //     // Keep encoding
+                //   //     // '-c:v',
+                //   //     // 'copy',
+                //   //     // compressing
+                //   //     //'-vcodec',
+                //   //     //'libx265',
+                //   //     //'-crf',
+                //   //     //'50',
+                //   //     // Define metadata
+                //   //     '-metadata',
+                //   //     'title=' + userVideoName,
+                //   //     '-metadata',
+                //   //     'artist=' + artist,
+                //   //     //CODEC
+                //   //     // '-codec',
+                //   //     // 'copy',
+                //   //     // Define output file
 
-                  //     fileName,
-                  //   ],
-                  //   {
-                  //     windowsHide: true,
-                  //     stdio: [
-                  //       /* Standard: stdin, stdout, stderr */
-                  //       'inherit',
-                  //       'inherit',
-                  //       'inherit',
-                  //       /* Custom: pipe:3, pipe:4, pipe:5 */
-                  //       'pipe',
-                  //       'pipe',
-                  //       'pipe',
-                  //     ],
-                  //   },
-                  // );
+                //   //     fileName,
+                //   //   ],
+                //   //   {
+                //   //     windowsHide: true,
+                //   //     stdio: [
+                //   //       /* Standard: stdin, stdout, stderr */
+                //   //       'inherit',
+                //   //       'inherit',
+                //   //       'inherit',
+                //   //       /* Custom: pipe:3, pipe:4, pipe:5 */
+                //   //       'pipe',
+                //   //       'pipe',
+                //   //       'pipe',
+                //   //     ],
+                //   //   },
+                //   // );
 
-                  // ffmpefProgcess.on('exit', () => {
-                  //   //console.log('done!');
-                  //   // const metadata = {
-                  //   //   title: userVideoName,
-                  //   //   artist: artist,
-                  //   // };
+                //   // ffmpefProgcess.on('exit', () => {
+                //   //   //console.log('done!');
+                //   //   // const metadata = {
+                //   //   //   title: userVideoName,
+                //   //   //   artist: artist,
+                //   //   // };
 
-                  //   ffmetadata.read(fileName, (error, data) => {
-                  //     if (error) throw error;
-                  //     else {
-                  //       res.download(fileName, err => {
-                  //         if (err) throw err;
+                //   //   ffmetadata.read(fileName, (error, data) => {
+                //   //     if (error) throw error;
+                //   //     else {
+                //   //       res.download(fileName, err => {
+                //   //         if (err) throw err;
 
-                  //         fs.unlinkSync(fileName);
-                  //       });
-                  //       console.log(data);
-                  //     }
-                  //   });
-                  //   //ffmetadata.write(fileName, metadata, metadataError => {
-                  //   //if (metadataError) throw metadataError;
-                  //   //else {
+                //   //         fs.unlinkSync(fileName);
+                //   //       });
+                //   //       console.log(data);
+                //   //     }
+                //   //   });
+                //   //   //ffmetadata.write(fileName, metadata, metadataError => {
+                //   //   //if (metadataError) throw metadataError;
+                //   //   //else {
 
-                  //   // }
-                  //   // });
-                  // });
+                //   //   // }
+                //   //   // });
+                //   // });
 
-                  // //res.download('./TEST_output (1).mp4', err => console.log('Download failed: ', err));
-                  // // audio.pipe(ffmpefProgcess.stdio[4]);
-                  // toDownload.pipe(ffmpefProgcess.stdio[4]);
-                  ///////////////////////////
-                } else {
-                  //const ref = 'https://www.youtube.com/watch?v=XXYlFuWEuKI';
-                  const audio = ytdl.downloadFromInfo(info, {quality: 'highestaudio'});
-                  const ffmpefProgcess = cp.spawn(
-                    ffmpeg,
-                    [
-                      //hide logs on console
-                      '-loglevel',
-                      '8',
-                      '-hide_banner',
-                      // // // //
-                      '-y', // replace existing file
-                      // set using threads
-                      '-threads',
-                      '6',
-                      // Set inputs
-                      '-i',
-                      'pipe:4',
-                      '-i',
-                      'pipe:5',
-                      // Map audio & video from streams
-                      '-map',
-                      '0:a',
-                      '-map',
-                      '1:v',
-                      // Keep encoding
-                      '-c:v',
-                      'copy',
-                      // compressing
-                      //'-vcodec',
-                      //'libx265',
-                      //'-crf',
-                      //'50',
-                      // Define metadata
-                      '-metadata',
-                      'title=' + userVideoName,
-                      '-metadata',
-                      'artist=' + artist,
-                      // Define output file
+                //   // //res.download('./TEST_output (1).mp4', err => console.log('Download failed: ', err));
+                //   // // audio.pipe(ffmpefProgcess.stdio[4]);
+                //   // toDownload.pipe(ffmpefProgcess.stdio[4]);
+                //   ///////////////////////////
+                // } else {
+                //   //const ref = 'https://www.youtube.com/watch?v=XXYlFuWEuKI';
+                //   const audio = ytdl.downloadFromInfo(info, {quality: 'highestaudio'});
+                //   const ffmpefProgcess = cp.spawn(
+                //     ffmpeg,
+                //     [
+                //       //hide logs on console
+                //       '-loglevel',
+                //       '8',
+                //       '-hide_banner',
+                //       // // // //
+                //       '-y', // replace existing file
+                //       // set using threads
+                //       '-threads',
+                //       '6',
+                //       // Set inputs
+                //       '-i',
+                //       'pipe:4',
+                //       '-i',
+                //       'pipe:5',
+                //       // Map audio & video from streams
+                //       '-map',
+                //       '0:a',
+                //       '-map',
+                //       '1:v',
+                //       // Keep encoding
+                //       '-c:v',
+                //       'copy',
+                //       // compressing
+                //       //'-vcodec',
+                //       //'libx265',
+                //       //'-crf',
+                //       //'50',
+                //       // Define metadata
+                //       '-metadata',
+                //       'title=' + userVideoName,
+                //       '-metadata',
+                //       'artist=' + artist,
+                //       // Define output file
 
-                      fileName,
-                    ],
-                    {
-                      windowsHide: true, //true
-                      stdio: [
-                        /* Standard: stdin, stdout, stderr */
-                        'inherit',
-                        'inherit',
-                        'inherit',
-                        /* Custom: pipe:3, pipe:4, pipe:5 */
-                        'pipe',
-                        'pipe',
-                        'pipe',
-                      ],
-                    },
-                  );
-                  ffmpefProgcess.on('close', () => {
-                    //console.log('done!');
+                //       fileName,
+                //     ],
+                //     {
+                //       windowsHide: true, //true
+                //       stdio: [
+                //         /* Standard: stdin, stdout, stderr */
+                //         'inherit',
+                //         'inherit',
+                //         'inherit',
+                //         /* Custom: pipe:3, pipe:4, pipe:5 */
+                //         'pipe',
+                //         'pipe',
+                //         'pipe',
+                //       ],
+                //     },
+                //   );
+                //   ffmpefProgcess.on('close', () => {
+                //     //console.log('done!');
 
-                    res.download(fileName, err => {
-                      if (err) throw err;
+                //     res.download(fileName, err => {
+                //       if (err) throw err;
 
-                      fs.unlinkSync(fileName);
-                    });
-                  });
+                //       fs.unlinkSync(fileName);
+                //     });
+                //   });
 
-                  //res.download('./TEST_output (1).mp4', err => console.log('Download failed: ', err));
-                  audio.pipe(ffmpefProgcess.stdio[4]);
-                  toDownload.pipe(ffmpefProgcess.stdio[5]);
-                }
+                //   //res.download('./TEST_output (1).mp4', err => console.log('Download failed: ', err));
+                //   audio.pipe(ffmpefProgcess.stdio[4]);
+                //   toDownload.pipe(ffmpefProgcess.stdio[5]);
+                // }
               })
               .catch(error => res.json({error: error.toString()}));
           } catch (error) {
@@ -263,7 +264,7 @@ exports.download = function (req, res) {
           res.json({error: 'itag is required'});
         }
       } else {
-        res.json({error: 'file name is required'});
+        res.json({error: 'artist name is required'});
       }
     } else {
       res.json({error: 'file name is required'});

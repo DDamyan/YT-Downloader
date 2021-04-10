@@ -4,8 +4,10 @@
 - [x] ~~name change~~
 - [ ] artist in metadata
 - [ ] fromatDropdown kleiner machen => damit es nicht oben und unten über den rand gehen kann
+- [ ] **`BUG:`** Formatdropdown zeig mehrermals den gleichn Format und verknotet sich mit andere Videoformate
+- [ ] Formatdropdown ausbauen mit mehreren Formaten (.webm)
 - [ ] server und frontend zusammenführen
-- [x] Dropdown Animationen
+- [x] ~~Dropdown Animationen~~
 - [ ] hinzufügen Animationen
 - [ ] löschen Animationen
 - [ ] download Animationen
@@ -14,10 +16,13 @@
 - [ ] errors oder mitteilung in kleinen popup an der seite mitteilen
 - [ ] Wenn Videos länger in der localStorage gespeichert werden, geht der Download nicht beim server ?????
 - [ ] !!! **Datein von Backend zum Frontend schicken und mit `WASM` im Browser bearbeiten** !!!
+  - [x] ~~FFMpeg in Frontend mit eingebunden~~
+  - [ ] ~~Backend umbebaut~~
+  - [ ] Passende Dateien zum Download bereitstellen
+  - [ ] Progressbar einbauen
+  - [ ] Loading async, and show it to client
 
-# **YT-Downloader**
-
-# **Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`
+# ~~**Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`~~
 
 # **OLD manifest (removed because of error):**
 

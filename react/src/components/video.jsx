@@ -1,6 +1,8 @@
 import {useState, useEffect, useRef} from 'react';
 import Dropdown from './formatDropdown';
 import ReactTooltip from 'react-tooltip';
+import {fetchFile} from '@ffmpeg/ffmpeg';
+
 // import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
 // import downloadSvg from '../svg/download.svg';
 // import trashSvg from '../svg/rubbish-bin.svg';
@@ -15,26 +17,44 @@ const Video = function (props) {
   const handleDelete = () => props.delVideo(props.index);
 
   const handleDownload = async (url, name, itag, artist, fomEnd) => {
-    if (itag > 0) {
-      //window.open(`http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}`);
-      // console.log(
-      //   `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
-      //   fomEnd,
-      // );
+    try {
+      if (itag <= 0) throw Error('plz select a format');
 
       const responce = await fetch(
         `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
       );
-      const blob = await responce.blob();
 
-      const hrefUrl = window.URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = hrefUrl;
-      a.download = `${artist}-${name}.${fomEnd}`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } else alert('plz select a format');
+      if (!responce.ok) throw Error('Something went fromg with the server fetch');
+
+      const contentType = responce.headers.get('content-type');
+      if (contentType && contentType.indexOf('application/json') !== -1)
+        // JSON
+        throw (await responce.json()).error;
+      else {
+        // FILE
+        const blob = await responce.blob();
+
+        // create GIF
+        const {ffmpeg} = props;
+        // var file = new File([blob], 'name');
+        // write file to memory
+        ffmpeg.FS('writeFile', 'test.mp4', await fetchFile(blob));
+        // Run the FFMpeg command
+        await ffmpeg.run('-i', 'test.mp4', '-t', '2', '-ss', '2', '-f', 'gif', 'out.gif');
+        // Read the result
+        const dataFile = ffmpeg.FS('readFile', 'out.gif');
+
+        console.log(dataFile.buffer);
+
+        var HTML_GIF = document.createElement('img');
+        HTML_GIF.setAttribute('width', '400');
+        HTML_GIF.setAttribute('src', URL.createObjectURL(new Blob([dataFile.buffer])));
+        HTML_GIF.setAttribute('alt', '__GIF__');
+        document.querySelector('#root').appendChild(HTML_GIF);
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   useEffect(() => {

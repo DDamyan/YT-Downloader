@@ -37,6 +37,7 @@ export const VideoList = function (props) {
             delVideo={props.delVideo}
             openModal={() => openModal(i, val.title, val.artist)}
             // renameVideo={(newName, newArtist) => props.renameVideo(i, newName, newArtist)}
+            ffmpeg={props.ffmpeg}
           />
         ))}
       </ul>
