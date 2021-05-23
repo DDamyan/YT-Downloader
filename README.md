@@ -1,4 +1,4 @@
-# **TODO**
+## **TODO**
 
 - [ ] extendet format view (av01.0.08M.08)
 - [x] ~~name change~~
@@ -22,9 +22,13 @@
   - [ ] Progressbar einbauen
   - [ ] Loading async, and show it to client
 
-# ~~**Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`~~
+#
 
-# **OLD manifest (removed because of error):**
+## ~~**Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`~~
+
+#
+
+## **OLD manifest (removed because of error):**
 
 ```JSON
 {
@@ -53,3 +57,5 @@
     "background_color": "#ffffff"
 }
 ```
+
+#

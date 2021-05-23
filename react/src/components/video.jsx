@@ -18,39 +18,56 @@ const Video = function (props) {
 
   const handleDownload = async (url, name, itag, artist, fomEnd) => {
     try {
-      if (itag <= 0) throw Error('plz select a format');
+      if (itag <= 0 || typeof itag == 'undefined') throw Error('plz select a format');
 
-      const responce = await fetch(
-        `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
-      );
+      const response = await fetch(`http://localhost:5000/download?url=${url}&itag=${itag}`);
+      // `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
 
-      if (!responce.ok) throw Error('Something went fromg with the server fetch');
+      if (!response.ok) throw Error('Something went fromg with the server fetch');
 
-      const contentType = responce.headers.get('content-type');
+      const contentType = response.headers.get('Content-Type');
+      // ERROR: returns null <=======================
+      console.log(response);
       if (contentType && contentType.indexOf('application/json') !== -1)
         // JSON
-        throw (await responce.json()).error;
-      else {
+        throw (await response.json()).error;
+      else if (contentType) {
         // FILE
-        const blob = await responce.blob();
-
+        const blob = await response.blob();
         // create GIF
         const {ffmpeg} = props;
-        // var file = new File([blob], 'name');
+        const tempFile = `temp.${fomEnd}`,
+          outFile = `out.${fomEnd}`;
         // write file to memory
-        ffmpeg.FS('writeFile', 'test.mp4', await fetchFile(blob));
+        ffmpeg.FS('writeFile', tempFile, await fetchFile(blob));
+
         // Run the FFMpeg command
-        await ffmpeg.run('-i', 'test.mp4', '-t', '2', '-ss', '2', '-f', 'gif', 'out.gif');
+        await ffmpeg.run(
+          '-y',
+          '-i',
+          tempFile,
+          '-metadata',
+          `title=${name}`,
+          '-metadata',
+          `artist=${artist}`,
+          outFile,
+        );
         // Read the result
-        const dataFile = ffmpeg.FS('readFile', 'out.gif');
+        const dataFile = ffmpeg.FS('readFile', outFile);
 
-        console.log(dataFile.buffer);
+        const hrefUrl = window.URL.createObjectURL(new Blob([dataFile]));
+        var a = document.createElement('a');
+        a.href = hrefUrl;
+        a.download = `${artist}-${name}.${fomEnd}`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        //a.click();
+        a.remove();
 
-        var HTML_GIF = document.createElement('img');
-        HTML_GIF.setAttribute('width', '400');
-        HTML_GIF.setAttribute('src', URL.createObjectURL(new Blob([dataFile.buffer])));
-        HTML_GIF.setAttribute('alt', '__GIF__');
-        document.querySelector('#root').appendChild(HTML_GIF);
+        ffmpeg.FS('unlink', outFile);
+        ffmpeg.FS('unlink', tempFile);
+      } else {
+        throw 'Fetch went wrong';
       }
     } catch (err) {
       alert(err);
