@@ -54,7 +54,10 @@ exports.download = function (req, res) {
               filter: format => format === wantedFormat,
             });
 
-            if (toDownload) toDownload.pipe(res);
+            if (toDownload) {
+              res.setHeader('Content-Type', 'video/mp4');
+              toDownload.pipe(res);
+            }
             // if (Wformat.hasAudio) {
             // toDownload.pipe(res);
             //   //TEST: CHANGE METADATA

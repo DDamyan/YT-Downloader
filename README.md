@@ -21,6 +21,7 @@
   - [ ] Passende Dateien zum Download bereitstellen
   - [ ] Progressbar einbauen
   - [ ] Loading async, and show it to client
+- [ ] Cross-Origin einschränken [Weitere Infos](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation)
 
 #
 

@@ -16,18 +16,16 @@ const Video = function (props) {
 
   const handleDelete = () => props.delVideo(props.index);
 
-  const handleDownload = async (url, name, itag, artist, fomEnd) => {
+  const handleDownload = async (url, name, itag, artist, format) => {
     try {
       if (itag <= 0 || typeof itag == 'undefined') throw Error('plz select a format');
-
+      // TODO: merge video and audio to one !!! <-------------------------------------------------------------
       const response = await fetch(`http://localhost:5000/download?url=${url}&itag=${itag}`);
       // `http://localhost:5000/download?url=${url}&name=${name}&itag=${itag}&artist=${artist}`,
 
       if (!response.ok) throw Error('Something went fromg with the server fetch');
 
       const contentType = response.headers.get('Content-Type');
-      // ERROR: returns null <=======================
-      console.log(response);
       if (contentType && contentType.indexOf('application/json') !== -1)
         // JSON
         throw (await response.json()).error;
@@ -36,11 +34,18 @@ const Video = function (props) {
         const blob = await response.blob();
         // create GIF
         const {ffmpeg} = props;
-        const tempFile = `temp.${fomEnd}`,
-          outFile = `out.${fomEnd}`;
+        const tempFile = `temp.${format}`,
+          outFile = `out.${format}`;
         // write file to memory
         ffmpeg.FS('writeFile', tempFile, await fetchFile(blob));
 
+        // Show Progress
+        ffmpeg.setProgress(({ratio}) => {
+          console.log(ratio);
+          /*
+           * ratio is a float number between 0 to 1.
+           */
+        });
         // Run the FFMpeg command
         await ffmpeg.run(
           '-y',
@@ -50,6 +55,8 @@ const Video = function (props) {
           `title=${name}`,
           '-metadata',
           `artist=${artist}`,
+          '-codec',
+          'copy',
           outFile,
         );
         // Read the result
@@ -58,10 +65,10 @@ const Video = function (props) {
         const hrefUrl = window.URL.createObjectURL(new Blob([dataFile]));
         var a = document.createElement('a');
         a.href = hrefUrl;
-        a.download = `${artist}-${name}.${fomEnd}`;
+        a.download = `${artist}-${name}.${format}`;
         a.style.display = 'none';
         document.body.appendChild(a);
-        //a.click();
+        a.click();
         a.remove();
 
         ffmpeg.FS('unlink', outFile);
