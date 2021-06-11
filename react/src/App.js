@@ -23,22 +23,22 @@ function App() {
     const data = localStorage.getItem('video-list');
     if (data) {
       setVideos(JSON.parse(data));
-
-      const KOK = JSON.parse(data);
-      console.log(
-        KOK[0].formats.map(
-          val =>
-            val.hasAudio +
-            ' -- ' +
-            val.itag +
-            ' -- ' +
-            val.qualityLabel +
-            '/' +
-            val.hasVideo +
-            ' -- ' +
-            val.container,
-        ),
-      );
+      console.log(JSON.parse(data));
+      // const KOK = JSON.parse(data);
+      // console.log(
+      //   KOK[0].formats.map(
+      //     val =>
+      //       val.hasAudio +
+      //       ' -- ' +
+      //       val.itag +
+      //       ' -- ' +
+      //       val.qualityLabel +
+      //       '/' +
+      //       val.hasVideo +
+      //       ' -- ' +
+      //       val.container,
+      //   ),
+      // );
     }
 
     ffmpagLoad();

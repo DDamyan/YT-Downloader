@@ -2,9 +2,10 @@
 
 - [ ] extendet format view (av01.0.08M.08)
 - [x] ~~name change~~
-- [ ] artist in metadata
-- [ ] fromatDropdown kleiner machen => damit es nicht oben und unten über den rand gehen kann
-- [ ] **`BUG:`** Formatdropdown zeig mehrermals den gleichn Format und verknotet sich mit andere Videoformate
+- [x] artist in metadata
+- [x] fromatDropdown kleiner machen => damit es nicht oben und unten über den rand gehen kann
+- [x] **`BUG:`** Formatdropdown zeig mehrermals den gleichn Format und verknotet sich mit andere Videoformate
+  - [ ] ===> Ist glaube ich behoben!
 - [ ] Formatdropdown ausbauen mit mehreren Formaten (.webm)
 - [ ] server und frontend zusammenführen
 - [x] ~~Dropdown Animationen~~
@@ -12,6 +13,9 @@
 - [ ] löschen Animationen
 - [ ] download Animationen
 - [ ] ladesymbol bei downloaden und hinzufügen
+- [ ] FormatDropdown stylen
+- [ ] Drag and drop List zum sortieren
+- [ ] anzeigen das schon Heruntergeladen wurde => vllt wie bei Steam?
 - [x] ~~Liste local speichen -> bei neuladen noch vorhanden!!!~~
 - [ ] errors oder mitteilung in kleinen popup an der seite mitteilen
 - [ ] Wenn Videos länger in der localStorage gespeichert werden, geht der Download nicht beim server ?????
@@ -19,6 +23,7 @@
   - [x] ~~FFMpeg in Frontend mit eingebunden~~
   - [ ] ~~Backend umbebaut~~
   - [ ] Passende Dateien zum Download bereitstellen
+    - [ ] Server gibt Video und Audio oder nur Audio zurück
   - [ ] Progressbar einbauen
   - [ ] Loading async, and show it to client
 - [ ] Cross-Origin einschränken [Weitere Infos](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation)

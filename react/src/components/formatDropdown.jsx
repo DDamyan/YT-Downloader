@@ -4,6 +4,84 @@ import {CSSTransition} from 'react-transition-group';
 //import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
+function LI_format(props) {
+  const isItemSelected = item => props.selected.find(curr => curr.itag === item.itag);
+
+  return (
+    <li
+      onClick={() => props.click(props.item)}
+      className={`dropdown-content` + (isItemSelected(props.item) ? ' selected' : '')}
+    >
+      {props.caption}
+    </li>
+  );
+}
+
+function FormatSection(props) {
+  return props.array.map(item => {
+    return (
+      <LI_format
+        key={item.itag}
+        caption={item.qualityLabel}
+        item={item}
+        click={props.clickEvent}
+        isItemSelected={i => props.isItemSelected(i)}
+        selected={props.selected}
+      />
+    );
+  });
+}
+
+function LI_category(props) {
+  return <li className='dropdown-category'>{props.caption}</li>;
+}
+
+function DropDownContent({items, clickEvent, selected}) {
+  return (
+    <span>
+      <LI_category caption='mp3' />
+      <LI_format
+        caption={items.mp3.audioBitrate + ' bit'}
+        item={items.mp3}
+        click={clickEvent}
+        selected={selected}
+      />
+
+      <LI_category caption='mp4' />
+      <FormatSection array={items.mp4} clickEvent={clickEvent} selected={selected} />
+    </span>
+  );
+
+  // {items.map(item => {
+  //               const isSelected = isItemSelected(item) ? 'selected' : '';
+  //               var categoryHTML = null;
+  //               if (usedCategory.indexOf(item.category) === -1) {
+  //                 if (item.category === 'mp3' || item.category === 'mp4')
+  //                   categoryHTML = newCategory(item);
+  //                 else {
+  //                   // setMoreFormats({
+  //                   //   ...moreFormats,
+  //                   //   [item.category]: [...moreFormats[item.category], item.value],
+  //                   // });
+  //                   return null;
+  //                 }
+  //               }
+  //               return (
+  //                 <span key={item.itag + item.category}>
+  //                   {categoryHTML}
+  //                   <li
+  //                     key={item.itag}
+  //                     onClick={() => handleOnClick(item)}
+  //                     className={`dropdown-content ${isSelected}`}
+  //                   >
+  //                     {item.value}
+  //                     {/* {item.noSound && <img className='no-sound' src={NoSoundSVG} alt='no sound' />} */}
+  //                     </li>
+  //                     </span>
+  //                   );
+  //                 })}
+}
+
 function Dropdown({items = [], setSelectedProp}) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -14,7 +92,7 @@ function Dropdown({items = [], setSelectedProp}) {
   };
   const contentlistRef = useRef();
 
-  const [moreFormats, setMoreFormats] = useState({show: false});
+  // const [moreFormats, setMoreFormats] = useState({show: false});
   const [dropdownStyle, setDropdownStyle] = useState({top: '100%'});
   // Dropdown.handleClickOutside = () => {
   //   console.log('outside!!');
@@ -60,24 +138,17 @@ function Dropdown({items = [], setSelectedProp}) {
     }
   };
 
-  function isItemSelected(item) {
-    if (selected.find(curr => curr.itag === item.itag)) {
-      return true;
-    }
-    return false;
-  }
+  // const sortedItems = items.sort((a, b) => {
+  //   if (a.category < b.category) return -1;
+  //   if (a.category > b.category) return 1;
+  //   return 0;
+  // });
 
-  const sortedItems = items.sort((a, b) => {
-    if (a.category < b.category) return -1;
-    if (a.category > b.category) return 1;
-    return 0;
-  });
-
-  var usedCategory = [];
-  const newCategory = item => {
-    usedCategory.push(item.category);
-    return <li className='dropdown-category'>{item.category}</li>;
-  };
+  // var usedCategory = [];
+  // const newCategory = item => {
+  //   usedCategory.push(item.category);
+  //   return <li className='dropdown-category'>{item.category}</li>;
+  // };
 
   return (
     <div className='dropdown-wrapper noselect'>
@@ -87,40 +158,13 @@ function Dropdown({items = [], setSelectedProp}) {
         onClick={() => toggle().then(() => changeViewport())}
       >
         {selected.length === 1
-          ? `${selected[0].value} (${selected[0].category})`
+          ? `${selected[0].value} (${selected[0].container})`
           : 'Choose a format:'}
       </div>
       <CSSTransition in={open} timeout={300} classNames='cssDropdownAnimation'>
         <div ref={contentlistRef} style={dropdownStyle} className='dropdown'>
           <ul className='dropdown-contentlist'>
-            {sortedItems.map(item => {
-              const isSelected = isItemSelected(item) ? 'selected' : '';
-              var categoryHTML = null;
-              if (usedCategory.indexOf(item.category) === -1) {
-                if (item.category === 'mp3' || item.category === 'mp4')
-                  categoryHTML = newCategory(item);
-                else {
-                  // setMoreFormats({
-                  //   ...moreFormats,
-                  //   [item.category]: [...moreFormats[item.category], item.value],
-                  // });
-                  return null;
-                }
-              }
-              return (
-                <span key={item.itag + item.category}>
-                  {categoryHTML}
-                  <li
-                    key={item.itag}
-                    onClick={() => handleOnClick(item)}
-                    className={`dropdown-content ${isSelected}`}
-                  >
-                    {item.value}
-                    {/* {item.noSound && <img className='no-sound' src={NoSoundSVG} alt='no sound' />} */}
-                  </li>
-                </span>
-              );
-            })}
+            <DropDownContent items={items} clickEvent={i => handleOnClick(i)} selected={selected} />
           </ul>
         </div>
       </CSSTransition>

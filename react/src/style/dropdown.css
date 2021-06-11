@@ -110,7 +110,7 @@ div.dropdown-button.open::after {
 }
 .cssDropdownAnimation-enter-done {
   display: block;
-  z-index: 100 i !important;
+  z-index: 100 !important;
 }
 .cssDropdownAnimation-exit {
   display: block;
