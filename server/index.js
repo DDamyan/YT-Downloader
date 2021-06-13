@@ -5,14 +5,14 @@ const {downloadAudio} = require('./AppFunctions/downloadAudio');
 // const ffmpeg = require('ffmpeg-static');
 // const cp = require('child_process');
 // const fs = require('fs');
-const ytdl = require('ytdl-core');
+// const ytdl = require('ytdl-core');
 
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const PORT = 5000;
 
-const ffmetadata = require('ffmetadata');
+// const ffmetadata = require('ffmetadata');
 
 app.use(cors());
 
@@ -24,7 +24,7 @@ app.get('/download', download);
 
 app.get('/info', info);
 
-app.get('/downloadAudio', downloadAudio);
+// app.get('/downloadAudio', downloadAudio);
 
 // app.get('/test', (req, res) => {
 //   try {

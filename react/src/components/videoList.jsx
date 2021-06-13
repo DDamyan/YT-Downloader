@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Video from './video';
 import EditModal from './editModal';
+import {handleDownload} from '../functions/handleDownload';
 
 export const VideoList = function (props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -37,7 +38,10 @@ export const VideoList = function (props) {
             delVideo={props.delVideo}
             openModal={() => openModal(i, val.title, val.artist)}
             // renameVideo={(newName, newArtist) => props.renameVideo(i, newName, newArtist)}
-            ffmpeg={props.ffmpeg}
+            // ffmpeg={props.ffmpeg}
+            handleDownload={(url, name, itag, artist, format) =>
+              handleDownload(props.ffmpeg, url, name, itag, artist, format)
+            }
           />
         ))}
       </ul>

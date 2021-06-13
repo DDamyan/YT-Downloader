@@ -1,14 +1,24 @@
 const ytdl = require('ytdl-core');
 const {validateLink} = require('./functions');
 
-exports.downloadAudio = function (req, res) {
-  // console.log(reques);
+exports.downloadAudio = function (_url) {
   try {
-    var URL = validateLink(req.query.url);
-    if (URL) {
-      ytdl(URL, {quality: 'highestaudio'}).pipe(res);
+    // var URL = validateLink(_url);
+    if (_url) {
+      return ytdl(_url, {quality: 'highestaudio'});
     } else throw 'invalid url';
   } catch (err) {
-    res.json({error: err.toString()});
+    return {error: err.toString()};
   }
 };
+
+// exports.downloadAudio = function (req, res) {
+//   try {
+//     var URL = validateLink(req.query.url);
+//     if (URL) {
+//       ytdl(URL, {quality: 'highestaudio'}).pipe(res);
+//     } else throw 'invalid url';
+//   } catch (err) {
+//     res.json({error: err.toString()});
+//   }
+// };
