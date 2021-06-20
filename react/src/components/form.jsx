@@ -33,16 +33,17 @@ export const Form = function (props) {
 
           filterFormat.map(format => {
             if (
-              format.container == 'mp4' &&
+              format.container === 'mp4' &&
               !format.hasAudio &&
               !format.hasOwnProperty('colorInfo')
             ) {
               format.value = format.qualityLabel;
               mp4.push(format);
-            } else if (format.container == 'webm' && format.hasVideo) {
+            } else if (format.container === 'webm' && format.hasVideo) {
               format.value = format.qualityLabel;
               webm.push(format);
-            } else if (format.container == 'mp4' && format.hasAudio && !format.hasVideo) {
+            } else if (format.container === 'mp4' && format.hasAudio && !format.hasVideo) {
+              console.log('is mp3!');
               format.value = format.audioBitrate;
               format.container = 'mp3';
               mp3 = format;

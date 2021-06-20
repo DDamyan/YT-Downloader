@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Form} from './components/form.jsx';
 import {VideoList} from './components/videoList.jsx';
-import {createFFmpeg, fetchFile} from '@ffmpeg/ffmpeg';
+import {createFFmpeg} from '@ffmpeg/ffmpeg';
 import './style/index.css';
 import './style/videos.css';
 import './style/form.css';

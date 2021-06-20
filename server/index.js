@@ -25,7 +25,10 @@ app.get('/download', download);
 app.get('/info', info);
 
 //app.get('/downloadAudio', downloadAudio);
-app.get('/downloadAudio', (req, res) => returnAudio(req.query.url).pipe(res));
+app.get('/downloadAudio', (req, res) => {
+  res.setHeader('Content-Type', 'audio/mp4');
+  returnAudio(req.query.url).pipe(res);
+});
 
 // app.get('/test', (req, res) => {
 //   try {

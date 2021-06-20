@@ -4,7 +4,7 @@ import {CSSTransition} from 'react-transition-group';
 //import NoSoundSVG from '../svg/no-sound.svg';
 import '../style/dropdown.css';
 
-function LI_format(props) {
+function FormatList(props) {
   const isItemSelected = item => props.selected.find(curr => curr.itag === item.itag);
 
   return (
@@ -20,7 +20,7 @@ function LI_format(props) {
 function FormatSection(props) {
   return props.array.map(item => {
     return (
-      <LI_format
+      <FormatList
         key={item.itag}
         caption={item.qualityLabel}
         item={item}
@@ -32,22 +32,22 @@ function FormatSection(props) {
   });
 }
 
-function LI_category(props) {
+function ListCategory(props) {
   return <li className='dropdown-category'>{props.caption}</li>;
 }
 
 function DropDownContent({items, clickEvent, selected}) {
   return (
     <span>
-      <LI_category caption='mp3' />
-      <LI_format
+      <ListCategory caption='mp3' />
+      <FormatList
         caption={items.mp3.audioBitrate + ' bit'}
         item={items.mp3}
         click={clickEvent}
         selected={selected}
       />
 
-      <LI_category caption='mp4' />
+      <ListCategory caption='mp4' />
       <FormatSection array={items.mp4} clickEvent={clickEvent} selected={selected} />
     </span>
   );

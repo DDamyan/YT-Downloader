@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import Video from './video';
 import EditModal from './editModal';
-import {handleDownload} from '../functions/handleDownload';
+import {requestAudio, requestVideo} from '../functions/requestServer';
+import {fetchFile} from '@ffmpeg/ffmpeg';
 
 export const VideoList = function (props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -14,6 +15,36 @@ export const VideoList = function (props) {
     setStartTitle(title);
     setStartArtist(artist);
     setModalIsOpen(true);
+  };
+
+  const saveFile = (name, blob) => {
+    const hrefUrl = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = hrefUrl;
+    a.download = name;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  const handleDownload = async (url, name, itag, artist, format) => {
+    try {
+      var fileName = `${artist}-${name}.${format}`;
+      if (!artist) fileName = `${name}.${format}`;
+
+      if (format === 'mp3') {
+        const blob = await requestAudio(url);
+        // EDIT METADATA
+        saveFile(fileName, blob);
+      } else {
+        const blob = await requestVideo(url, itag);
+        // FFMpeg edit !!!
+        saveFile(fileName, blob);
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
@@ -39,9 +70,10 @@ export const VideoList = function (props) {
             openModal={() => openModal(i, val.title, val.artist)}
             // renameVideo={(newName, newArtist) => props.renameVideo(i, newName, newArtist)}
             // ffmpeg={props.ffmpeg}
-            handleDownload={(url, name, itag, artist, format) =>
-              handleDownload(props.ffmpeg, url, name, itag, artist, format)
-            }
+            /*handleDownload={(url, name, itag, artist, format) =>
+              requestServer(props.ffmpeg, url, name, itag, artist, format)
+            }*/
+            handleDownload={handleDownload}
           />
         ))}
       </ul>

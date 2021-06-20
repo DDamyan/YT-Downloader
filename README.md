@@ -5,11 +5,12 @@
 - [x] ~~artist in metadata~~
 - [ ] Maybe more metadata to Out-file
 - [ ] Edit mordal stylen
+- [ ] audioContentType auf validität prüfen?
 - [ ] **Video editor**
-  - [ ]  Video zuschneiden
-  - [ ]  Audio lauter/leiser
-  - [ ]  Thumnail runterladen
-  - [ ]  Screenshot von bestimmten Zeitpunkt herunterladen
+  - [ ] Video zuschneiden
+  - [ ] Audio lauter/leiser
+  - [ ] Thumnail runterladen
+  - [ ] Screenshot von bestimmten Zeitpunkt herunterladen
 - [x] ~~fromatDropdown kleiner machen => damit es nicht oben und unten über den rand gehen kann~~
 - [ ] Change Download-Button
   - [ ] Wenn format ausgewählt dann beim ersten Klick daten von Server holen und unsichbaren-download-DOM-Element erstellen, erst beim zweiten Klick herunterladen
