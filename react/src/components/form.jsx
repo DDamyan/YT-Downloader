@@ -24,7 +24,41 @@ export const Form = function (props) {
         if (res.hasOwnProperty('error')) {
           //error
           alert(res.error);
-        } else props.addVideo(res);
+        } else {
+          var filterFormat = [...res.formats];
+
+          var mp4 = [],
+            webm = [],
+            mp3 = undefined;
+
+          filterFormat.map(format => {
+            if (
+              format.container == 'mp4' &&
+              !format.hasAudio &&
+              !format.hasOwnProperty('colorInfo')
+            ) {
+              format.value = format.qualityLabel;
+              mp4.push(format);
+            } else if (format.container == 'webm' && format.hasVideo) {
+              format.value = format.qualityLabel;
+              webm.push(format);
+            } else if (format.container == 'mp4' && format.hasAudio && !format.hasVideo) {
+              format.value = format.audioBitrate;
+              format.container = 'mp3';
+              mp3 = format;
+            }
+          });
+
+          mp4.sort((f1, f2) => f2.height - f1.height);
+          webm.sort((f1, f2) => f2.height - f1.height);
+
+          filterFormat = {mp3, mp4, webm};
+          // console.log('res', res);
+          // console.log('filterFormat', filterFormat);
+          res.formats = filterFormat;
+
+          props.addVideo(res);
+        }
         setLink('');
       });
       //   const linkInput = new URL(link);
