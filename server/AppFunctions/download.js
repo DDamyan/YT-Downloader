@@ -12,17 +12,18 @@ exports.download = function (req, res) {
     //const artist = req.query.artist;
     // if (artist) {
     const itag = req.query.itag;
-    if (itag && itag == 140) {
-      // res.json({error: 'It is a mp3!!'});
-      res.setHeader('Content-Type', 'audio/mpeg');
-      downloadAudio(URL).pipe(res);
-      // console.log('audio typeof ->', typeof audio);
-      // if (typeof audio === 'object') {
-      //   if (audio.hasOwnProperty('error')) console.log(audio);
-      //   else audio.pipe(res);
-      // }
-      // audio.pipe(res);
-    } else if (itag) {
+    // if (itag && itag == 140) {
+    // res.json({error: 'It is a mp3!!'});
+    //res.setHeader('Content-Type', 'audio/mpeg');
+    // downloadAudio(URL).pipe(res);
+    // console.log('audio typeof ->', typeof audio);
+    // if (typeof audio === 'object') {
+    //   if (audio.hasOwnProperty('error')) console.log(audio);
+    //   else audio.pipe(res);
+    // }
+    // audio.pipe(res);
+    //} else
+    if (itag) {
       try {
         ytdl
           .getInfo(URL)

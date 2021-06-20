@@ -49,7 +49,7 @@ function App() {
   });
 
   const addVideo = function (vid) {
-    setVideos([...videos, vid]);
+    setVideos([vid, ...videos]);
   };
   const delVideo = function (ind) {
     setVideos(videos.filter((_, index) => index !== ind));

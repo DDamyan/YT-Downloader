@@ -1,6 +1,6 @@
 const {info} = require('./AppFunctions/info');
 const {download} = require('./AppFunctions/download');
-const {downloadAudio} = require('./AppFunctions/downloadAudio');
+const {returnAudio} = require('./AppFunctions/downloadAudio');
 
 // const ffmpeg = require('ffmpeg-static');
 // const cp = require('child_process');
@@ -24,7 +24,8 @@ app.get('/download', download);
 
 app.get('/info', info);
 
-// app.get('/downloadAudio', downloadAudio);
+//app.get('/downloadAudio', downloadAudio);
+app.get('/downloadAudio', (req, res) => returnAudio(req.query.url).pipe(res));
 
 // app.get('/test', (req, res) => {
 //   try {
@@ -54,5 +55,5 @@ app.get('/info', info);
 // });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`);
+  console.log(`Server listening at http://localhost:${PORT}`);
 });
