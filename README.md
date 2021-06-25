@@ -6,6 +6,8 @@
 - [ ] Maybe more metadata to Out-file
 - [ ] Edit mordal stylen
 - [ ] audioContentType auf validität prüfen?
+- [ ] Schneller zum Client pipen (dauert ganz schön lange) => weiß nicht ob möglich
+- [ ] Handlen wenn kein Artist eingetragen ist
 - [ ] **Video editor**
   - [ ] Video zuschneiden
   - [ ] Audio lauter/leiser
@@ -36,6 +38,7 @@
   - [x] Passende Dateien zum Download bereitstellen
     - [x] Server gibt Video und Audio oder nur Audio zurück
   - [ ] Progressbar einbauen
+    - [ ] spamen von download-Button verhindern!!!
   - [ ] Loading async, and show it to client
 - [ ] Cross-Origin einschränken [Weitere Infos](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation)
 

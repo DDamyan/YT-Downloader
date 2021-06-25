@@ -23,25 +23,39 @@ exports.download = function (req, res) {
     // }
     // audio.pipe(res);
     //} else
+    const start = new Date().getTime();
     if (itag) {
       try {
         ytdl
           .getInfo(URL)
           .then(info => {
+            console.log('1', new Date().toTimeString());
             const wantedFormat = ytdl.chooseFormat(info.formats, {quality: itag});
-
-            const toDownload = ytdl.downloadFromInfo(info, {
-              filter: format => format === wantedFormat,
-            });
-
-            if (toDownload) {
-              res.setHeader('Content-Type', 'video/mp4');
-              toDownload.pipe(res);
-            }
+            console.log('2', new Date().toTimeString());
+            //const toDownload =
+            res.setHeader('Content-Type', 'video/mp4');
+            ytdl
+              .downloadFromInfo(info, {
+                filter: format => format === wantedFormat,
+                highWaterMark: 65536, // idk if works <=== ????????????
+              })
+              .on('end', () => console.log('-END', new Date().getTime() - start))
+              .on('data', chunk => console.log(chunk))
+              .pipe(res);
+            // toDownload.on('end', () => {
+            //   console.log('-END', new Date().toTimeString());
+            // });
+            console.log('3', new Date().toTimeString());
+            // if (toDownload) {
+            //   res.setHeader('Content-Type', 'video/mp4');
+            //   toDownload.pipe(res);
+            // }
+            console.log('4', new Date().toTimeString());
             // if (Wformat.hasAudio) {
             // toDownload.pipe(res);
           })
           .catch(error => res.json({error: error.toString()}));
+        console.log('5', new Date().toTimeString());
       } catch (error) {
         res.json({error: error.toString()});
       }

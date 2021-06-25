@@ -16,10 +16,6 @@ const PORT = 5000;
 
 app.use(cors());
 
-app.use(function (req, res, next) {
-  res.status(404).send('404 - Sorry cant find that!');
-});
-
 // app.get('/', (req, res) => {
 //   res.send('Hello World!');
 // });
@@ -30,8 +26,10 @@ app.get('/info', info);
 
 //app.get('/downloadAudio', downloadAudio);
 app.get('/downloadAudio', (req, res) => {
+  console.log('A0', new Date().toTimeString());
   res.setHeader('Content-Type', 'audio/mp4');
   returnAudio(req.query.url).pipe(res);
+  console.log('A5', new Date().toTimeString());
 });
 
 // app.get('/test', (req, res) => {
@@ -60,6 +58,10 @@ app.get('/downloadAudio', (req, res) => {
 //     })
 //     .catch(error => res.json({error: error.toString()}));
 // });
+
+app.use(function (req, res, next) {
+  res.status(404).json({error: '404 - Sorry cant find that!'});
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);

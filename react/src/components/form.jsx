@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import {validURL} from '../functions/validURL.js';
 
 const serverFetch = async function (url, callback) {
-  const promise = await fetch(`http://localhost:5000/info?url=${url}`, {
-    method: 'GET',
-  });
-  const result = await promise.json();
+  const res = await fetch(`http://localhost:5000/info?url=${url}`);
+  const result = await res.json();
 
   callback(result);
 
@@ -29,8 +27,8 @@ export const Form = function (props) {
 
           var mp4 = [],
             webm = [],
+            usedQualityLabels = [],
             mp3 = undefined;
-
           filterFormat.map(format => {
             if (
               format.container === 'mp4' &&
@@ -38,15 +36,23 @@ export const Form = function (props) {
               !format.hasOwnProperty('colorInfo')
             ) {
               format.value = format.qualityLabel;
+              usedQualityLabels.push(format.qualityLabel);
               mp4.push(format);
             } else if (format.container === 'webm' && format.hasVideo) {
               format.value = format.qualityLabel;
               webm.push(format);
             } else if (format.container === 'mp4' && format.hasAudio && !format.hasVideo) {
-              console.log('is mp3!');
-              format.value = format.audioBitrate;
+              // is mp3 => maybe need edit!
+              format.value = format.audioBitrate + ' kbps';
               format.container = 'mp3';
               mp3 = format;
+            }
+          });
+
+          webm.map(currWebm => {
+            if (usedQualityLabels.indexOf(currWebm.qualityLabel) === -1) {
+              currWebm.container = 'mp4';
+              mp4.push(currWebm);
             }
           });
 

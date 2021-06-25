@@ -38,8 +38,8 @@ export const VideoList = function (props) {
         // EDIT METADATA
         saveFile(fileName, blob);
       } else {
-        const blob = await requestVideo(url, itag);
-        const audioBlob = await requestAudio(url);
+        let [blob, audioBlob] = await Promise.all([requestVideo(url, itag), requestAudio(url)]);
+        console.log('GOT it!', new Date().toTimeString());
         // FFMpeg edit !!!
         const ffmpeg = props.ffmpeg;
         const tempFile = `temp.${format}`,

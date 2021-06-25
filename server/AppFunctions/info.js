@@ -3,9 +3,8 @@ const ytdl = require('ytdl-core');
 const {validateLink} = require('./functions');
 
 exports.info = function (req, res) {
-  var URL = req.query.url;
-  console.log(URL);
   try {
+    var URL = req.query.url;
     const videoID = validateLink(URL);
 
     if (videoID) {
@@ -25,7 +24,7 @@ exports.info = function (req, res) {
             'videoId': videoId,
             //'rating': info.player_response.videoDetails.averageRating,
             'uploaded by': author.name,
-            'thumbnail': thumbnails[3],
+            'thumbnail': thumbnails[2],
             'formats': info.formats,
           };
 

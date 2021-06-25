@@ -16,9 +16,14 @@ exports.downloadAudio = function (req, res) {
 exports.returnAudio = function (_url) {
   try {
     console.log('return-Audio-REQUEST!!!');
+    console.log('A1', new Date().toTimeString());
     var URL = validateLink(_url);
+    console.log('A2', new Date().toTimeString());
     if (URL) {
-      return ytdl(URL, {quality: 'highestaudio'});
+      console.log('A3', new Date().toTimeString());
+      return ytdl(URL, {quality: 'highestaudio'}).on('end', () => {
+        console.log('=END', new Date().toTimeString());
+      });
     } else throw 'invalid url';
   } catch (err) {
     return {error: err.toString()};
