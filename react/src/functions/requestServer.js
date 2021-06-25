@@ -1,7 +1,7 @@
 //import JSZip from 'jszip';
 export async function requestAudio(url) {
   const response = await fetch(`http://localhost:5000/downloadAudio?url=${url}`);
-  if (!response.ok) throw 'Something went fromg with the server fetch';
+  if (!response.ok) throw 'Something went wrong with the server fetch';
 
   const contentType = response.headers.get('Content-Type');
   if (contentType && contentType.indexOf('application/json') !== -1)
@@ -20,7 +20,7 @@ export async function requestVideo(url, itag) {
 
   const response = await fetch(`http://localhost:5000/download?url=${url}&itag=${itag}`);
 
-  if (!response.ok) throw 'Something went fromg with the server fetch';
+  if (!response.ok) throw 'Something went wrong with the server fetch';
 
   const contentType = response.headers.get('Content-Type');
   if (contentType && contentType.indexOf('application/json') !== -1)

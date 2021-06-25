@@ -39,8 +39,52 @@ export const VideoList = function (props) {
         saveFile(fileName, blob);
       } else {
         const blob = await requestVideo(url, itag);
+        const audioBlob = await requestAudio(url);
         // FFMpeg edit !!!
-        saveFile(fileName, blob);
+        const ffmpeg = props.ffmpeg;
+        const tempFile = `temp.${format}`,
+          outFile = `out.${format}`,
+          audioTempFile = `temp.mp3`;
+        // write file to memory
+        ffmpeg.FS('writeFile', tempFile, await fetchFile(blob));
+        ffmpeg.FS('writeFile', audioTempFile, await fetchFile(audioBlob));
+        // Show Progress
+        ffmpeg.setProgress(({ratio}) => {
+          console.log(ratio);
+          /*
+           * ratio is a float number between 0 to 1.
+           */
+        });
+        // Run the FFMpeg command
+        await ffmpeg.run(
+          '-y',
+          '-i',
+          tempFile,
+          '-i',
+          audioTempFile,
+          //'-map',
+          //'0:v:0',
+          '-map',
+          '0:v',
+          '-map',
+          '1:a',
+          '-metadata',
+          `title=${name}`,
+          '-metadata',
+          `artist=${artist}`,
+          // '-codec',
+          '-c:v',
+          'copy',
+          outFile,
+        );
+        // Read the result
+        const dataFile = ffmpeg.FS('readFile', outFile);
+
+        ffmpeg.FS('unlink', outFile);
+        ffmpeg.FS('unlink', tempFile);
+
+        ///////////////
+        saveFile(fileName, new Blob([dataFile.buffer]));
       }
     } catch (err) {
       alert(err);

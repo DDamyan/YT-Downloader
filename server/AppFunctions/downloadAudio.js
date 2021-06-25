@@ -18,7 +18,7 @@ exports.returnAudio = function (_url) {
     console.log('return-Audio-REQUEST!!!');
     var URL = validateLink(_url);
     if (URL) {
-      return ytdl(URL, {quality: 'lowestaudio'});
+      return ytdl(URL, {quality: 'highestaudio'});
     } else throw 'invalid url';
   } catch (err) {
     return {error: err.toString()};

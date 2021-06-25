@@ -16,6 +16,10 @@ const PORT = 5000;
 
 app.use(cors());
 
+app.use(function (req, res, next) {
+  res.status(404).send('404 - Sorry cant find that!');
+});
+
 // app.get('/', (req, res) => {
 //   res.send('Hello World!');
 // });
