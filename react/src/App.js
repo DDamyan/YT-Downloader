@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
 import {Form} from './components/form.jsx';
+import Sidebar from './components/Sidebar';
 import {VideoList} from './components/videoList.jsx';
 import {createFFmpeg} from '@ffmpeg/ffmpeg';
 import './style/index.css';
-import './style/videos.css';
-import './style/form.css';
-import './style/modal.css';
-import './style/variable.css';
 
 const ffmpeg = createFFmpeg(); //{log: true}
 
 function App() {
   const [videos, setVideos] = useState([]);
-  const [ffmpegReady, setFfmpegReady] = useState(false);
+  const [ffmpegReady, setFfmpegReady] = useState(true); // <==== false
 
   const ffmpagLoad = async () => {
-    await ffmpeg.load();
+    //await ffmpeg.load();
     setFfmpegReady(true);
   };
 
@@ -65,7 +62,8 @@ function App() {
 
   return ffmpegReady ? (
     <div>
-      <Form addVideo={addVideo} />
+      {/* <Form addVideo={addVideo} /> */}
+      <Sidebar />
       <VideoList videos={videos} delVideo={delVideo} renameVideo={renameVideo} ffmpeg={ffmpeg} />
     </div>
   ) : (
