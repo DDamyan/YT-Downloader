@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Form} from './components/form.jsx';
 import Sidebar from './components/Sidebar';
 import {VideoList} from './components/videoList.jsx';
 import {createFFmpeg} from '@ffmpeg/ffmpeg';
@@ -62,8 +61,7 @@ function App() {
 
   return ffmpegReady ? (
     <div>
-      {/* <Form addVideo={addVideo} /> */}
-      <Sidebar />
+      <Sidebar addVideo={addVideo} />
       <VideoList videos={videos} delVideo={delVideo} renameVideo={renameVideo} ffmpeg={ffmpeg} />
     </div>
   ) : (
