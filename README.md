@@ -4,6 +4,7 @@
 - [x] ~~name change~~
 - [x] ~~artist in metadata~~
 - [ ] Maybe more metadata to Out-file
+- [ ] auch mp3 metadata bearbeiten
 - [ ] Edit mordal stylen
 - [ ] audioContentType auf validität prüfen?
 - [ ] Schneller zum Client pipen (dauert ganz schön lange) => weiß nicht ob möglich
@@ -41,6 +42,7 @@
     - [ ] spamen von download-Button verhindern!!!
   - [ ] Loading async, and show it to client
 - [ ] Cross-Origin einschränken [Weitere Infos](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation)
+- [ ] einstellung zum ein/aus für ffmpeg => weniger RAM usage
 
 #
 
