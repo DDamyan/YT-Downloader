@@ -1,6 +1,7 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useContext} from 'react';
 import Dropdown from './formatDropdown';
 import ReactTooltip from 'react-tooltip';
+import {videosContext} from '../context/videosContext';
 // import {fetchFile} from '@ffmpeg/ffmpeg';
 
 // import externalLinkSvg from '../svg/symbol-fur-externen-link.svg';
@@ -14,7 +15,8 @@ const Video = function (props) {
 
   const listRef = useRef();
 
-  const handleDelete = () => props.delVideo(props.index);
+  const {delVideo} = useContext(videosContext);
+  const handleDelete = () => delVideo(props.index);
 
   //const handleDownload = async (url, name, itag, artist, format) => {
   // try {

@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {validURL} from '../functions/validURL.js';
+
+import {videosContext} from '../context/videosContext';
 
 const serverFetch = async function (url, callback) {
   const res = await fetch(`http://localhost:5000/info?url=${url}`);
@@ -11,8 +13,10 @@ const serverFetch = async function (url, callback) {
   //result.formats.map(format => console.log(format.qualityLabel + ' -- ' + format.itag));
 };
 
-export const Form = function (props) {
+export const Form = function () {
   const [link, setLink] = useState('');
+
+  const {addVideo} = useContext(videosContext);
 
   const handle_Change = e => setLink(e.target.value);
   const handle_Submit = e => {
@@ -64,7 +68,7 @@ export const Form = function (props) {
           // console.log('filterFormat', filterFormat);
           res.formats = filterFormat;
 
-          props.addVideo(res);
+          addVideo(res);
         }
         setLink('');
       });

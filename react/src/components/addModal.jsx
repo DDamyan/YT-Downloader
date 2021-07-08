@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 
-// import {Form} from './form.jsx';
+import {Form} from './form.jsx';
 
 Modal.setAppElement('#root');
 
@@ -14,7 +14,7 @@ export default function AddModal(props) {
       onRequestClose={() => props.closeModal()}
       //style={{overlay: {}, content: {}}}
     >
-      {/* <Form /> */}
+      <Form />
     </Modal>
   );
 }

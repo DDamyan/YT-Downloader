@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Video from './video';
 import EditModal from './editModal';
 import {requestAudio, requestVideo} from '../functions/requestServer';
 import {fetchFile} from '@ffmpeg/ffmpeg';
+
+import {videosContext} from '../context/videosContext';
 
 export const VideoList = function (props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [startTitle, setStartTitle] = useState('');
   const [startArtist, setStartArtist] = useState('');
   const [videoIndex, setVideoIndex] = useState(null);
+
+  const {renameVideo} = useContext(videosContext);
 
   const openModal = (index, title, artist) => {
     setVideoIndex(index);
@@ -97,7 +101,7 @@ export const VideoList = function (props) {
         isOpen={modalIsOpen}
         artist={startArtist}
         title={startTitle}
-        renameVideo={(newName, newArtist) => props.renameVideo(videoIndex, newName, newArtist)}
+        renameVideo={(newName, newArtist) => renameVideo(videoIndex, newName, newArtist)}
         setIsOpen={setModalIsOpen}
       />
       <ul>
@@ -110,7 +114,6 @@ export const VideoList = function (props) {
             thumbnail={val.thumbnail.url}
             formats={val.formats}
             href={val.url}
-            delVideo={props.delVideo}
             openModal={() => openModal(i, val.title, val.artist)}
             // renameVideo={(newName, newArtist) => props.renameVideo(i, newName, newArtist)}
             // ffmpeg={props.ffmpeg}

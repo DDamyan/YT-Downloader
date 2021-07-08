@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import {VideoList} from './components/videoList.jsx';
 import {createFFmpeg} from '@ffmpeg/ffmpeg';
 import './style/index.css';
+import {videosContext} from './context/videosContext';
 
 const ffmpeg = createFFmpeg(); //{log: true}
 
@@ -19,7 +20,7 @@ function App() {
     const data = localStorage.getItem('video-list');
     if (data) {
       setVideos(JSON.parse(data));
-      console.log(JSON.parse(data));
+      //console.log(JSON.parse(data));
       // const KOK = JSON.parse(data);
       // console.log(
       //   KOK[0].formats.map(
@@ -41,6 +42,7 @@ function App() {
   }, []);
 
   React.useEffect(() => {
+    console.log('WRITE!');
     localStorage.setItem('video-list', JSON.stringify(videos));
   });
 
@@ -61,8 +63,10 @@ function App() {
 
   return ffmpegReady ? (
     <div>
-      <Sidebar addVideo={addVideo} />
-      <VideoList videos={videos} delVideo={delVideo} renameVideo={renameVideo} ffmpeg={ffmpeg} />
+      <videosContext.Provider value={{addVideo, renameVideo, delVideo}}>
+        <Sidebar />
+        <VideoList videos={videos} ffmpeg={ffmpeg} />
+      </videosContext.Provider>
     </div>
   ) : (
     <p>Loading...</p>
