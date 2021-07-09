@@ -44,6 +44,12 @@
 - [ ] Cross-Origin einschränken [Weitere Infos](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation)
 - [ ] einstellung zum ein/aus für ffmpeg => weniger RAM usage
 
+- [ ] Server/nginx features:
+  - [ ] SSL // HTTPS
+  - [ ] Login oder andere Authentifizierung
+  - [ ] Raspberry Pi Monitoring (nur intern zulassen vllt durch bestimmeten User oder nur vom gleichen Netzwerk?) z.B. Last, Besucherzahlen und Videos heruntergeladen
+  - [ ] PM2?? => load balancing: mehrere gleiche Prozesse laufen lassen
+
 #
 
 ## ~~**Youtube-API Key:** `AIzaSyDUXCG1zYXFUsaeBJyY1C723Hn4LSMWtZw`~~
