@@ -3,6 +3,7 @@ import Video from './video';
 import EditModal from './editModal';
 import {requestAudio, requestVideo} from '../functions/requestServer';
 import {fetchFile} from '@ffmpeg/ffmpeg';
+import MP3Tag from 'mp3tag.js';
 
 import {videosContext} from '../context/videosContext';
 
@@ -30,6 +31,7 @@ export const VideoList = function (props) {
     document.body.appendChild(a);
     a.click();
     a.remove();
+    window.URL.revokeObjectURL(hrefUrl);
   };
 
   const handleDownload = async (url, name, itag, artist, format) => {
@@ -37,10 +39,34 @@ export const VideoList = function (props) {
       var fileName = `${artist}-${name}.${format}`;
       if (!artist) fileName = `${name}.${format}`;
 
+      console.log('fileName', fileName);
+
       if (format === 'mp3') {
-        const blob = await requestAudio(url);
+        var blob = await requestAudio(url);
         // EDIT METADATA
-        saveFile(fileName, blob);
+        //const buffer = await blob.arrayBuffer(); // Replace this with the mp3 file's buffer
+        const buffer = new ArrayBuffer(128); // Replace this with the mp3 file's buffer
+        const verbose = true; // Logs all processes using `console.log`
+        var mp3tag = new MP3Tag(buffer, verbose);
+
+        // Read the tags from the buffer
+        mp3tag.read();
+
+        // Handle error if there's any
+        if (mp3tag.error !== '') throw new Error(mp3tag.error);
+
+        console.log(mp3tag.tags);
+
+        // Please see `Tags and Frames`
+        mp3tag.tags.title = 'New Title';
+        mp3tag.tags.artist = 'New Artist';
+        mp3tag.tags.album = 'New Album';
+
+        //mp3tag.save({strict: true, id3v2: {padding: 4096}}); // Saves the new changes
+        mp3tag.save(); // Saves the new changes
+
+        debugger;
+        saveFile(fileName, new Blob([blob, buffer], {type: 'audio/mp3'}));
       } else {
         let [blob, audioBlob] = await Promise.all([requestVideo(url, itag), requestAudio(url)]);
         console.log('GOT it!', new Date().toTimeString());

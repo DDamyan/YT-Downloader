@@ -42,7 +42,6 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    console.log('WRITE!');
     localStorage.setItem('video-list', JSON.stringify(videos));
   });
 

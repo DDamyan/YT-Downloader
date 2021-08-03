@@ -9,6 +9,8 @@ export async function requestAudio(url) {
     throw (await response.json()).error;
   else if (contentType) {
     // FILE
+    //console.log(response);
+    //debugger;
     return await response.blob();
   } else {
     throw 'Audio-Fetch went wrong';

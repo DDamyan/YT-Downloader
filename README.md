@@ -49,6 +49,7 @@
   - [ ] Login oder andere Authentifizierung
   - [ ] Raspberry Pi Monitoring (nur intern zulassen vllt durch bestimmeten User oder nur vom gleichen Netzwerk?) z.B. Last, Besucherzahlen und Videos heruntergeladen
   - [ ] PM2?? => load balancing: mehrere gleiche Prozesse laufen lassen
+  - [ ] show error on connection refuse(server unavable) to user
 
 #
 

@@ -26,10 +26,15 @@ app.get('/info', info);
 
 //app.get('/downloadAudio', downloadAudio);
 app.get('/downloadAudio', (req, res) => {
-  console.log('A0', new Date().toTimeString());
-  res.setHeader('Content-Type', 'audio/mp4');
-  returnAudio(req.query.url).pipe(res);
-  console.log('A5', new Date().toTimeString());
+  try {
+    console.log('A0', new Date().toTimeString());
+    const audio = returnAudio(req.query.url);
+    res.setHeader('Content-Type', 'audio/mpeg'); //audio/mp4
+    audio.pipe(res);
+    console.log('A5', new Date().toTimeString());
+  } catch (err) {
+    res.json({error: err.toString()});
+  }
 });
 
 // app.get('/test', (req, res) => {

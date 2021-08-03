@@ -9,6 +9,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.3",
     "jszip": "^3.6.0",
+    "mp3tag.js": "^3.1.2",
     "react": "^17.0.1",
     "react-cool-onclickoutside": "^1.6.1",
     "react-dom": "^17.0.1",
