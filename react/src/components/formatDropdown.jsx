@@ -20,13 +20,10 @@ function Dropdown({items = [], setSelectedProp}) {
   //   console.log('outside!!');
   //   setOpen(false);
   // };
-  const outsideRef = useOnclickOutside(
-    () => {
-      console.log('outside!!!');
-      setOpen(false);
-    },
-    {excludeScrollbar: true, ignoreClass: 'dropdown-category'},
-  );
+  const outsideRef = useOnclickOutside(() => setOpen(false), {
+    excludeScrollbar: true,
+    ignoreClass: 'dropdown-category',
+  });
 
   function handleOnClick(item) {
     if (!selected.some(curr => curr.itag === item.itag)) {

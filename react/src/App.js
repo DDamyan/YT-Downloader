@@ -14,6 +14,7 @@ function App() {
     const data = localStorage.getItem('video-list');
     if (data) {
       setVideos(JSON.parse(data));
+      console.log(JSON.parse(data));
     }
   }, []);
 
